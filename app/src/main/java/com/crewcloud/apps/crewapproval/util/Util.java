@@ -104,7 +104,6 @@ public class Util {
     public static int getHour(String tv) {
         int h = 0;
         String str[] = tv.trim().split(" ");
-//        Log.e(TAG, str[1].split(":")[0]);
         h = Integer.parseInt(str[1].split(":")[0]);
         if (str[0].equalsIgnoreCase("PM")) h += 12;
         return h;

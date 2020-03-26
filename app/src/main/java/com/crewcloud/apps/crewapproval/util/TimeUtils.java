@@ -75,21 +75,6 @@ public class TimeUtils {
         return tz.getRawOffset() / 60000;
     }
 
-    public static String displayTimeWithoutOffset(String birthDate) {
-        String result = "";
-        try {
-            String timeString;
-            timeString = birthDate.substring(birthDate.indexOf('(') + 1, birthDate.indexOf('+'));
-            Date date = new Date(Long.parseLong(timeString));
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
-            result = simpleDateFormat.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
     public static String displayTimeWithoutOffsetV2(String birthDate) {
         String result = "";
         try {

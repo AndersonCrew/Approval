@@ -29,8 +29,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> mapData = remoteMessage.getData();
-
-        Log.d(">>>>>", mapData.toString());
         if (mapData.containsKey("message")) {
             ShowNotification(mapData.get("message"),
                     mapData.get("title"),
@@ -49,9 +47,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     CrewCloudApplication.getInstance().removeShortcut();
                 }
             }
-            Log.d(">>>>> badgecount", "" + badgeCount);
         } catch (Exception e) {
-            Log.d(">>>>> badgecount", e.getMessage());
             e.printStackTrace();
         }
 

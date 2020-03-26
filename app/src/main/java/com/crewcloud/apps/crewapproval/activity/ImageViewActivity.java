@@ -36,7 +36,7 @@ public class ImageViewActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ivAvatar = (ImageView) findViewById(R.id.iv_avatar);
+        ivAvatar = findViewById(R.id.iv_avatar);
     }
 
     private void receiveData() {

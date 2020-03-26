@@ -47,12 +47,6 @@
                 android:layout_gravity="center"
                 android:scaleType="fitXY" />
 
-            <!--<com.dazone.crewschedule.CustomView.FaceOverlayViewForSizeOther-->
-            <!--android:id="@+id/avatar_imv"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:layout_gravity="center" />-->
-
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"

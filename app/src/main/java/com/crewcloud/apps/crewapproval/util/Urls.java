@@ -6,6 +6,5 @@ public class Urls {
     public static final String URL_CHECK_SESSION = "/UI/WebService/WebServiceCenter.asmx/CheckSessionUser_v2";
     public static final String URL_LOG_OUT = "/UI/WebService/WebServiceCenter.asmx/LogOutUser";
     public static final String URL_HAS_APPLICATION = "/UI/WebService/WebServiceCenter.asmx/HasApplication_v2";
-
     public static final String URL_CHANGE_PASSWORD = "/UI/WebService/WebServiceCenter.asmx/UpdatePassword";
 }

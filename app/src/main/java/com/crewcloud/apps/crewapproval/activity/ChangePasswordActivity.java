@@ -36,7 +36,7 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.nav_back_ic);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -49,12 +49,12 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
-        btnChangePassword = (TextView) findViewById(R.id.btn_change_password);
+        btnChangePassword = findViewById(R.id.btn_change_password);
         btnChangePassword.setOnClickListener(this);
 
-        edOldPassword = (EditText) findViewById(R.id.ed_old_password);
-        edNewPassword = (EditText) findViewById(R.id.ed_new_password);
-        edConfirmPassword = (EditText) findViewById(R.id.ed_confirm_password);
+        edOldPassword = findViewById(R.id.ed_old_password);
+        edNewPassword = findViewById(R.id.ed_new_password);
+        edConfirmPassword = findViewById(R.id.ed_confirm_password);
     }
 
     private boolean checkConfirmPassword(String originalPassword, String newPassword, String confirmPassword) {
@@ -87,7 +87,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void onFail(ErrorDto errorDto) {
                 Util.showShortMessage(errorDto.message);
-//                System.out.println("onFail " + errorDto.toString());
             }
         });
     }

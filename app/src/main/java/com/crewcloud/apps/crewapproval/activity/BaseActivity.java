@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
@@ -20,34 +19,24 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public abstract class BaseActivity extends AppCompatActivity {
-
     public ActionBar mActionBar;
     protected Context mContext;
     public static BaseActivity Instance;
     public ImageLoader mImageLoader = ImageLoader.getInstance();
-    //public Prefs mPrefs;
     private Dialog mProgressDialog;
-    protected String server_site;
-    private boolean isVisible = false;
+    protected String domain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         Instance = this;
-        //mPrefs = CrewBoardApplication.getInstance().getmPrefs();
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         enableHomeAction();
-       /* options = new DisplayImageOptions.Builder()
-                .showImageOnFail(R.drawable.avatar).cacheInMemory(true)
-                .cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
-                .build();*/
 
-
-        //server_site = mPrefs.getServerSite();
-        server_site = "http://google.com";
+        domain = "http://google.com";
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .threadPoolSize(5)
                 .denyCacheImageMultipleSizesInMemory()
@@ -87,15 +76,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    public void startNewActivity(Class cls, int count) {
-        Intent newIntent = new Intent(this, cls);
-        newIntent.putExtra("count_id", count);
-        newIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(newIntent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
     public void startSingleActivity(Class cls) {
         Intent newIntent = new Intent(this, cls);
         newIntent.putExtra("count_id", 1);
@@ -119,12 +99,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    public void displayAddAlertDialog(String title, String content, String positiveTitle, String negativeTitle, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negativeListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(content).setCancelable(false).setPositiveButton(positiveTitle, positiveListener).setNegativeButton(negativeTitle, negativeListener);
-        builder.create().show();
     }
 
     public void showNetworkDialog() {

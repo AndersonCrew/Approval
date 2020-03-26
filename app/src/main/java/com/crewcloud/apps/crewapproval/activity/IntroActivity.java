@@ -43,8 +43,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class IntroActivity extends BaseActivity {
-    public PreferenceUtilities prefs;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +67,6 @@ public class IntroActivity extends BaseActivity {
     private boolean checkPermissions() {
         // android.permission.INTERNET
         // android.permission.WRITE_EXTERNAL_STORAGE
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             return false;
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -112,8 +109,6 @@ public class IntroActivity extends BaseActivity {
         }
     }
 
-    // ----------------------------------------------------------------------------------------------
-
     private void startApplication() {
         PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
@@ -127,8 +122,6 @@ public class IntroActivity extends BaseActivity {
             finish();
         }
     }
-
-    // ----------------------------------------------------------------------------------------------
 
     private class WebClientAsync_HasApplication_v2 extends AsyncTask<Void, Void, Void> {
         private boolean mIsFailed;
@@ -274,8 +267,6 @@ public class IntroActivity extends BaseActivity {
         }
     }
 
-    // ------------------------------Update app -----------------------------------------------------
-
     private class ActivityHandler extends Handler {
         private final WeakReference<IntroActivity> mWeakActivity;
 
@@ -291,25 +282,6 @@ public class IntroActivity extends BaseActivity {
                 if (msg.what == Constants.ACTIVITY_HANDLER_NEXT_ACTIVITY) {
                     startApplication();
                 } else if (msg.what == Constants.ACTIVITY_HANDLER_START_UPDATE) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//                    builder.setMessage(R.string.string_update_content);
-//                    builder.setPositiveButton(R.string.auto_login_button_yes, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            new Async_DownloadApkFile(IntroActivity.this, Constants.CREWAPPROVAL).execute();
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    builder.setNegativeButton(R.string.auto_login_button_no, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                            startApplication();
-//                        }
-//                    });
-//                    AlertDialog dialog = builder.create();
-//                    dialog.setCancelable(false);
-//                    dialog.show();
                     DialogUtil.customAlertDialog(BaseActivity.Instance, getString(R.string.string_update_content), getString(R.string.auto_login_button_yes), getString(R.string.auto_login_button_no),
                             new DialogUtil.OnAlertDialogViewClickEvent() {
                                 @Override
@@ -341,7 +313,6 @@ public class IntroActivity extends BaseActivity {
                 String serverVersion = bufferedReader.readLine();
                 inputStream.close();
                 Util.printLogs("serverVersion: " + serverVersion);
-//                prefs.setSERVER_VERSION(serverVersion);
                 String appVersion = BuildConfig.VERSION_NAME;
 
                 int result = Util.versionCompare(serverVersion, appVersion);

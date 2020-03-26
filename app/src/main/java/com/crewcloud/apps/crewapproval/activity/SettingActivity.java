@@ -1,15 +1,12 @@
 package com.crewcloud.apps.crewapproval.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -27,11 +24,10 @@ import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.Util;
 import com.crewcloud.apps.crewapproval.util.WebClient;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener, GetUserCallBack {
-    private ImageView img_avatar;
-    private LinearLayout ln_profile, ln_general, ln_notify, ln_logout, ln_about;
+    private ImageView imgAvatar;
+    private LinearLayout lnProfile, lnGeneral, lnNotify, lnLogout, lnAbout;
     public PreferenceUtilities prefs;
 
     @Override
@@ -46,7 +42,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.myColor_PrimaryDark));
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.nav_back_ic);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -56,69 +52,37 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        ln_profile = (LinearLayout) findViewById(R.id.ln_profile);
-        ln_general = (LinearLayout) findViewById(R.id.ln_general);
-        ln_notify = (LinearLayout) findViewById(R.id.ln_notify);
-        ln_logout = (LinearLayout) findViewById(R.id.ln_logout);
-        ln_about = (LinearLayout) findViewById(R.id.ln_about);
-        ln_profile.setOnClickListener(this);
-        ln_general.setOnClickListener(this);
-        ln_notify.setOnClickListener(this);
-        ln_logout.setOnClickListener(this);
-        ln_about.setOnClickListener(this);
-//        PreferenceUtilities preferenceUtilities = CreCloudApplication.getInstance().getPreferenceUtilities();
-//        String serviceDomain = prefUtils.getCurrentServiceDomain();
-//        String avatar = prefUtils.getAvatar();
-//        String newAvatar = avatar.replaceAll("\"", "");
-//        String mUrl = serviceDomain + newAvatar;
-//        ImageLoader imageLoader = ImageLoader.getInstance();
-        img_avatar = (ImageView) findViewById(R.id.img_avatar);
-//        imageLoader.displayImage(mUrl, img_avatar);
-//        UserDto userDto = UserDBHelper.getUser();
+        lnProfile = findViewById(R.id.ln_profile);
+        lnGeneral = findViewById(R.id.ln_general);
+        lnNotify = findViewById(R.id.ln_notify);
+        lnLogout = findViewById(R.id.ln_logout);
+        lnAbout = findViewById(R.id.ln_about);
+        lnProfile.setOnClickListener(this);
+        lnGeneral.setOnClickListener(this);
+        lnNotify.setOnClickListener(this);
+        lnLogout.setOnClickListener(this);
+        lnAbout.setOnClickListener(this);
+        imgAvatar = findViewById(R.id.img_avatar);
         String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getUserAvatar();
         if (url.contains("/Images/Avatar.jpg"))
             HttpRequest.getInstance().GetUser(prefs.getCurrentUserNo(), this);
-        Util.showImage(url, img_avatar);
+        Util.showImage(url, imgAvatar);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == ln_profile) {
-//            Intent intent = new Intent(SettingActivity.this, LogoutActivity.class);
-//            startActivity(intent);
+        if (v == lnProfile) {
             BaseActivity.Instance.callActivity(ProfileUserActivity.class);
-        } else if (v == ln_general) {
+        } else if (v == lnGeneral) {
             Toast.makeText(getApplicationContext(), "undev", Toast.LENGTH_SHORT).show();
-        } else if (v == ln_notify) {
-//            Intent intent = new Intent(SettingActivity.this, NotificationSettingActivity.class);
-//            startActivity(intent);
+        } else if (v == lnNotify) {
             BaseActivity.Instance.callActivity(NotificationSettingActivity.class);
-        } else if (v == ln_logout) {
+        } else if (v == lnLogout) {
             logoutAlert();
-        } else if (v == ln_about) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle(getString(R.string.about) + getString(R.string.app_name));
+        } else if (v == lnAbout) {
             String title = getString(R.string.about) + " " + getString(R.string.app_name);
             String versionName = BuildConfig.VERSION_NAME;
             String user_version = getResources().getString(R.string.user_version) + " " + versionName;
-//
-////            String lastest_version = getResources().getString(R.string.lastest_version) + " " + prefs.getSERVER_VERSION();
-////        String msg = user_version + "\n\n" + lastest_version;
-//            builder.setMessage(user_version);
-//
-//            builder.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    dialogInterface.cancel();
-//                }
-//            });
-//
-//            AlertDialog dialog = builder.create();
-//            dialog.show();
-//            Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-//            if (b != null) {
-//                b.setTextColor(ContextCompat.getColor(this, R.color.light_black));
-//            }
             DialogUtil.oneButtonAlertDialog(this, title, user_version, getString(R.string.confirm));
         }
     }
@@ -156,8 +120,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onGetUserSuccess(Profile profile) {
         prefs.setUserAvatar(profile.avatar);
-        Util.showImage(profile.avatar, img_avatar);
-//        ImageLoader.getInstance().displayImage(profile.avatar, img_avatar);
+        Util.showImage(profile.avatar, imgAvatar);
     }
 
     @Override
@@ -174,7 +137,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
-//                            preferenceUtilities.setCurrentMobileSessionId("");
                         }
 
                         @Override

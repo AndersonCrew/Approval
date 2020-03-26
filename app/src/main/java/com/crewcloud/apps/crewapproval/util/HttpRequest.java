@@ -36,7 +36,6 @@ public class HttpRequest {
         }
 
         root_link = CrewCloudApplication.getInstance().getPreferenceUtilities().getServerSite();
-
         return mInstance;
     }
 
@@ -100,7 +99,6 @@ public class HttpRequest {
                 userDto.prefs.setCurrentCompanyNo(userDto.CompanyNo);
                 userDto.prefs.setCurrentUserNo(userDto.Id);
                 userDto.prefs.setCurrentUserID(userDto.userID);
-                //UserDBHelper.addUser(userDto);
                 if (baseHTTPCallBack != null) {
                     baseHTTPCallBack.onHTTPSuccess();
                 }
@@ -127,7 +125,6 @@ public class HttpRequest {
         webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
             @Override
             public void onSuccess(String response) {
-//                Log.d(">>>>>", response);
                 Util.printLogs("User info =" + response);
                 Gson gson = new Gson();
                 UserDto userDto = gson.fromJson(response, UserDto.class);
@@ -141,7 +138,6 @@ public class HttpRequest {
                 userDto.prefs.setEmail(userDto.MailAddress);
                 userDto.prefs.setCurrentUserID(userDto.userID);
                 userDto.prefs.setUserAvatar(userDto.avatar);
-                //UserDBHelper.addUser(userDto);
                 userDto.prefs.setCurrentCompanyDomain(companyDomain);
                 callBack.OnAutoLoginSuccess(response);
             }
@@ -176,7 +172,6 @@ public class HttpRequest {
             @Override
             public void onSuccess(String response) {
                 callBack.onHTTPSuccess();
-//                Log.e(TAG,"response:"+response);
             }
 
             @Override
@@ -199,14 +194,10 @@ public class HttpRequest {
         webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
             @Override
             public void onSuccess(String response) {
-
-                Log.e("Update API", "Update:" + response);
             }
 
             @Override
             public void onFailure(ErrorDto error) {
-
-//                baseHTTPCallBack.onHTTPFail(error);
             }
         });
     }
@@ -223,20 +214,16 @@ public class HttpRequest {
             public void onSuccess(String response) {
                 Log.e("Delete", " :" + response);
                 callBack.onHTTPSuccess();
-//                Log.e(TAG,"response:"+response);
             }
 
             @Override
             public void onFailure(ErrorDto error) {
-
-//                baseHTTPCallBack.onHTTPFail(error);
             }
         });
     }
 
     public static void updateTimeZone(String regid) {
         final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + URL_UPDATE_TIMEZONE_ANDROID_DEVICE;
-
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("timeZoneOffset", "" + Util.getTimezoneOffsetInMinutes());
@@ -246,21 +233,16 @@ public class HttpRequest {
         webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
             @Override
             public void onSuccess(String response) {
-
-                Log.e("CrewApproval", "Update TimeZone response:" + response);
             }
 
             @Override
             public void onFailure(ErrorDto error) {
-
-//                baseHTTPCallBack.onHTTPFail(error);
             }
         });
     }
 
     public void GetUser(int userNo, final GetUserCallBack callBack) {
         String url = root_link + URL_GET_USER;
-//        Log.e(TAG, root_link + " GetUser:" + url);
         Map<String, Object> params = new HashMap<>();
         params.put("sessionId", CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("languageCode", Util.getPhoneLanguage());
@@ -285,7 +267,6 @@ public class HttpRequest {
 
     public void getBadgeCount() {
         final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + URL_GET_BADGE_COUNT;
-
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("timeZoneOffset", "" + Util.getTimezoneOffsetInMinutes());
@@ -295,10 +276,7 @@ public class HttpRequest {
             @Override
             public void onSuccess(String response) {
                 try {
-//                    Log.d(">>>HttpRequest", String.valueOf(response));
-//                    JSONObject data = new JSONObject(response);
                     int count = Integer.parseInt(response);
-//                    Log.d(">>>HttpRequest", String.valueOf(count));
                     if (count > 0)
                         CrewCloudApplication.getInstance().shortcut(count);
                     else
@@ -311,7 +289,6 @@ public class HttpRequest {
             @Override
             public void onFailure(ErrorDto error) {
                 Log.d(">>>HttpRequest", error.message);
-//                baseHTTPCallBack.onHTTPFail(error);
             }
         });
     }
@@ -388,7 +365,6 @@ public class HttpRequest {
                     errorDto.message = e.toString();
                     callBack.onFail(errorDto);
                 }
-
             }
 
             @Override

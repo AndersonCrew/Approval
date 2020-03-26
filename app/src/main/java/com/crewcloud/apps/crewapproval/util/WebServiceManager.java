@@ -37,16 +37,6 @@ public class WebServiceManager {
                                 errorDto = new ErrorDto();
                                 errorDto.message = Util.getString(R.string.no_network_error);
                             }
-//                            else {
-//                                if (errorDto.code == 0 && !url.contains(Urls.URL_CHECK_SESSION)) {
-//                                    // Custom store session error
-//                                    CrewCloudApplication.getInstance().getPreferenceUtilities().clearLogin();
-//                                    BaseActivity.Instance.startSingleActivity(LoginActivity.class);
-//                                } else {
-//                                    Util.printLogs("Form is invalid");
-//                                }
-//                            }
-
                             listener.onFailure(errorDto);
                         }
                     }

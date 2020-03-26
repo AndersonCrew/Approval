@@ -4,7 +4,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -20,11 +19,11 @@ import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import java.util.Calendar;
 
 public class NotificationSettingActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    View view_getnotify, view_sound, view_vibrate, view_notifi_time;
-    TextView tv_getnoti, tv_sound, tv_vibrate, tv_time, tv_starthour, tv_endhour;
-    Switch Switch_notify, Switch_sound, Switch_vibrate, Switch_time;
-    PreferenceUtilities mPref;
-    String regid = "", notificationOptions = "";
+    private View viewGetNotify, viewSound, viewVibrate, viewNotifiTime;
+    private TextView tvGetNotify, tvSound, tvVibrate, tvTime, tvStartHour, tvEndHour;
+    private Switch switchNotify, switchSound, switchVibrate, switchTime;
+    private PreferenceUtilities mPref;
+    private String notificationOptions = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +36,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
 
     public void init() {
         mPref = CrewCloudApplication.getInstance().getPreferenceUtilities();
-        regid = mPref.getGCMregistrationid();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.nav_back_ic);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -47,16 +45,16 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
                 finish();
             }
         });
-        view_getnotify = (View) findViewById(R.id.view_getnotify);
-        view_sound = (View) findViewById(R.id.view_sound);
-        view_vibrate = (View) findViewById(R.id.view_vibrate);
-        view_notifi_time = (View) findViewById(R.id.view_notifi_time);
-        tv_getnoti = (TextView) view_getnotify.findViewById(R.id.tv_switch);
-        tv_sound = (TextView) view_sound.findViewById(R.id.tv_switch);
-        tv_vibrate = (TextView) view_vibrate.findViewById(R.id.tv_switch);
-        tv_time = (TextView) view_notifi_time.findViewById(R.id.tv_switch);
-        tv_starthour = (TextView) findViewById(R.id.tv_starthour);
-        tv_endhour = (TextView) findViewById(R.id.tv_endhour);
+        viewGetNotify = findViewById(R.id.view_getnotify);
+        viewSound = findViewById(R.id.view_sound);
+        viewVibrate = findViewById(R.id.view_vibrate);
+        viewNotifiTime = findViewById(R.id.view_notifi_time);
+        tvGetNotify = viewGetNotify.findViewById(R.id.tv_switch);
+        tvSound = viewSound.findViewById(R.id.tv_switch);
+        tvVibrate = viewVibrate.findViewById(R.id.tv_switch);
+        tvTime = viewNotifiTime.findViewById(R.id.tv_switch);
+        tvStartHour = findViewById(R.id.tv_starthour);
+        tvEndHour = findViewById(R.id.tv_endhour);
         String _start = mPref.getSTART_TIME();
         String _end = mPref.getEND_TIME();
         if (_start.length() == 0) {
@@ -67,24 +65,24 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
             _end = "PM 06:00";
             mPref.setEND_TIME(_end);
         }
-        tv_starthour.setText(_start);
-        tv_endhour.setText(_end);
-        tv_starthour.setOnClickListener(this);
-        tv_endhour.setOnClickListener(this);
-        tv_getnoti.setText(getResources().getString(R.string.getnotify));
-        tv_sound.setText(getResources().getString(R.string.sound));
-        tv_vibrate.setText(getResources().getString(R.string.vibrate));
-        tv_time.setText(getResources().getString(R.string.notification_time_long));
-        Switch_notify = (Switch) view_getnotify.findViewById(R.id.switch1);
-        Switch_sound = (Switch) view_sound.findViewById(R.id.switch1);
-        Switch_vibrate = (Switch) view_vibrate.findViewById(R.id.switch1);
-        Switch_time = (Switch) view_notifi_time.findViewById(R.id.switch1);
-        Switch_notify.setOnCheckedChangeListener(this);
-        Switch_notify.setChecked(mPref.getNOTIFI_MAIL());
-        Switch_sound.setChecked(mPref.getNOTIFI_SOUND());
-        Switch_vibrate.setChecked(mPref.getNOTIFI_VIBRATE());
-        Switch_time.setChecked(mPref.getNOTIFI_TIME());
-        setEnable(Switch_notify.isChecked());
+        tvStartHour.setText(_start);
+        tvEndHour.setText(_end);
+        tvStartHour.setOnClickListener(this);
+        tvEndHour.setOnClickListener(this);
+        tvGetNotify.setText(getResources().getString(R.string.getnotify));
+        tvSound.setText(getResources().getString(R.string.sound));
+        tvVibrate.setText(getResources().getString(R.string.vibrate));
+        tvTime.setText(getResources().getString(R.string.notification_time_long));
+        switchNotify = viewGetNotify.findViewById(R.id.switch1);
+        switchSound = viewSound.findViewById(R.id.switch1);
+        switchVibrate = viewVibrate.findViewById(R.id.switch1);
+        switchTime = viewNotifiTime.findViewById(R.id.switch1);
+        switchNotify.setOnCheckedChangeListener(this);
+        switchNotify.setChecked(mPref.getNOTIFI_MAIL());
+        switchSound.setChecked(mPref.getNOTIFI_SOUND());
+        switchVibrate.setChecked(mPref.getNOTIFI_VIBRATE());
+        switchTime.setChecked(mPref.getNOTIFI_TIME());
+        setEnable(switchNotify.isChecked());
     }
 
     @Override
@@ -93,39 +91,37 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
     }
 
     public void setEnable(boolean isChecked) {
-        Switch_sound.setEnabled(isChecked);
-        Switch_vibrate.setEnabled(isChecked);
-        Switch_time.setEnabled(isChecked);
+        switchSound.setEnabled(isChecked);
+        switchVibrate.setEnabled(isChecked);
+        switchTime.setEnabled(isChecked);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPref.setNOTIFI_MAIL(Switch_notify.isChecked());
-        mPref.setNOTIFI_SOUND(Switch_sound.isChecked());
-        mPref.setNOTIFI_VIBRATE(Switch_vibrate.isChecked());
-        mPref.setNOTIFI_TIME(Switch_time.isChecked());
-        mPref.setSTART_TIME(tv_starthour.getText().toString().trim());
-        mPref.setEND_TIME(tv_endhour.getText().toString().trim());
+        mPref.setNOTIFI_MAIL(switchNotify.isChecked());
+        mPref.setNOTIFI_SOUND(switchSound.isChecked());
+        mPref.setNOTIFI_VIBRATE(switchVibrate.isChecked());
+        mPref.setNOTIFI_TIME(switchTime.isChecked());
+        mPref.setSTART_TIME(tvStartHour.getText().toString().trim());
+        mPref.setEND_TIME(tvEndHour.getText().toString().trim());
         notificationOptions = "{" +
-                "\"enabled\": " + Switch_notify.isChecked() + "," +
-                "\"sound\": " + Switch_sound.isChecked() + "," +
-                "\"vibrate\": " + Switch_vibrate.isChecked() + "," +
-                "\"notitime\": " + Switch_time.isChecked() + "," +
-                "\"starttime\": \"" + getFullHour(tv_starthour) + "\"," +
-                "\"endtime\": \"" + getFullHour(tv_endhour) + "\"" + "}";
+                "\"enabled\": " + switchNotify.isChecked() + "," +
+                "\"sound\": " + switchSound.isChecked() + "," +
+                "\"vibrate\": " + switchVibrate.isChecked() + "," +
+                "\"notitime\": " + switchTime.isChecked() + "," +
+                "\"starttime\": \"" + getFullHour(tvStartHour) + "\"," +
+                "\"endtime\": \"" + getFullHour(tvEndHour) + "\"" + "}";
         notificationOptions = notificationOptions.trim();
-//        Log.d(">>>HttpRequest", "notificationOptions:"+notificationOptions);
-//        Log.d(">>>HttpRequest", "regid:"+regid);
         HttpRequest.getInstance().updateAndroidDevice(mPref.getGCMregistrationid(), notificationOptions);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == tv_starthour) {
-            ShowTimerDialog(tv_starthour, tv_endhour);
-        } else if (v == tv_endhour) {
-            ShowTimerDialogEnd(tv_endhour, tv_starthour);
+        if (v == tvStartHour) {
+            ShowTimerDialog(tvStartHour, tvEndHour);
+        } else if (v == tvEndHour) {
+            ShowTimerDialogEnd(tvEndHour, tvStartHour);
         }
     }
 
@@ -206,7 +202,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
 
     public int getHour(TextView tv) {
         int h = 0;
-        String str[] = tv.getText().toString().split(" ");
+        String[] str = tv.getText().toString().split(" ");
         h = Integer.parseInt(str[1].split(":")[0]);
         if (str[0].equalsIgnoreCase("PM")) h += 12;
         return h;
@@ -214,7 +210,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements Co
 
     public int getMinute(TextView tv) {
         int h = 0;
-        String str[] = tv.getText().toString().split(" ");
+        String[] str = tv.getText().toString().split(" ");
         h = Integer.parseInt(str[1].split(":")[1]);
         return h;
     }

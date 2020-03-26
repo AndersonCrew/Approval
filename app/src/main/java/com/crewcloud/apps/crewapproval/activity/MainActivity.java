@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
-        wvContent = (WebView) findViewById(R.id.wvContent);
-        mProgressBar = (ProgressBar) findViewById(R.id.pbProgress);
+        wvContent = findViewById(R.id.wvContent);
+        mProgressBar = findViewById(R.id.pbProgress);
         initWebContent();
         CrewCloudApplication.getInstance().setMainActivityInstance(this);
 
@@ -94,15 +94,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
         }
 
         if (CrewCloudApplication.getInstance().isHasUpdate()) {
-//
-//            String domain = preferenceUtilities.getCurrentCompanyDomain();
-//
-//            CookieManager.getInstance().setCookie("http://" + domain, "skey0=" + preferenceUtilities.getCurrentMobileSessionId());
-//            CookieManager.getInstance().setCookie("http://" + domain, "skey1=" + "123123123123132");
-//            CookieManager.getInstance().setCookie("http://" + domain, "skey2=" + DeviceUtilities.getLanguageCode());
-//            CookieManager.getInstance().setCookie("http://" + domain, "skey3=" + preferenceUtilities.getCurrentCompanyNo());
-//
-//            wvContent.loadUrl("http://" + domain + "/UI/_EAPPMobile/Main.aspx");
             refreshMainURL();
         }
         CrewCloudApplication.activityResumed();
@@ -171,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
 
                     @Override
                     public void onCancelClick() {
-//                        new IntroActivity.WebClientAsync_HasApplication_v2().execute();
                     }
                 });
     }
@@ -278,10 +268,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
         }
     }
 
-    // ----------------------------------------------------------------------------------------------
-
     private boolean mIsBackPressed = false;
-
     private static class ActivityHandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
 
@@ -318,8 +305,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             }
         }
     }
-
-    // ----------------------------------------------------------------------------------------------
 
     private DownloadManager mFileDownloadManager = null;
     private final Pattern CONTENT_DISPOSITION_PATTERN = Pattern.compile("(filename\\*?=.*;)|(filename\\*?=.*\\n)|(filename\\*?=.*)");
@@ -408,8 +393,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             FileOutputStream fileOutputStream = null;
 
             try {
-                //URL apkUrl = new URL("http://www.bizsw.co.kr:8080/Attachments/AppVn/File/" + mApkFileName + ".apk");
-//                URL apkUrl = new URL(Constants.ROOT_URL_ANDROID + Constants.PACKGE + mApkFileName + ".apk");
                 URL apkUrl = new URL(updateUrl);
                 urlConnection = (HttpURLConnection) apkUrl.openConnection();
                 inputStream = urlConnection.getInputStream();
@@ -479,12 +462,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/download/" + mApkFileName + "_new.apk";
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                    if (checkPermissions()) {
-//                        startIntentUpdate(activity, filePath);
-//                    } else {
-//                        setPermissions();
-//                    }
-
                     Uri apkUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", new File(filePath));
                     Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
                     intent.setData(apkUri);

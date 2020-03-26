@@ -1,6 +1,5 @@
 package com.crewcloud.apps.crewapproval.base;
 
-import android.util.Log;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -29,6 +28,5 @@ public class WebContentChromeClient extends WebChromeClient {
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
         CrewCloudApplication.getInstance().setHasUpdate(false);
-//        Log.d(">>>>>", view.getUrl());
     }
 }
