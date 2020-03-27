@@ -18,7 +18,7 @@ import com.crewcloud.apps.crewapproval.activity.MainActivity;
 
 public class WebContentClient extends WebViewClient {
 
-    private MainActivity ParentActivity = null;
+    private MainActivity ParentActivity;
     private ProgressBar mProgressbar;
 
     public WebContentClient(MainActivity activity, ProgressBar progressBar) {

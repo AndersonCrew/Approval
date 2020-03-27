@@ -16,7 +16,6 @@ public class UserDto {
     public String session;
     public String avatar;
     public String NameCompany = "";
-    public ArrayList<CompanyDto> informationcompany;
     public PreferenceUtilities prefs = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
     public UserDto() {

@@ -35,7 +35,6 @@ public class PreferenceUtilities {
     private final String DOMAIN = "domain";
     private final String PASS = "pass";
     private final String NAME = "name";
-    private final String SERVER_VERSION = "server_version";
 
     private static final String SERVERSITE = "serversite";
     private static final String ACCESSTOKEN = "accesstoken";
@@ -75,40 +74,21 @@ public class PreferenceUtilities {
         return mPreferences.getString(KEY_CURRENT_MOBILE_SESSION_ID, "");
     }
 
-    public void setSERVER_VERSION(String key) {
-        mPreferences.edit().putString(SERVER_VERSION, key).apply();
-    }
-
-    public String getSERVER_VERSION() {
-        return mPreferences.getString(SERVER_VERSION, "");
-    }
-
-
-    // ----------------------------------------------------------------------------------------------
 
     public void setFullName(String fullName) {
         mPreferences.edit().putString(FULL_NAME, fullName).apply();
     }
 
-    public String getFullName() {
-        return mPreferences.getString(FULL_NAME, "");
-    }
 
     public void setEmail(String email) {
         mPreferences.edit().putString(EMAIL, email).apply();
     }
 
-    public String getEmail() {
-        return mPreferences.getString(EMAIL, "");
-    }
 
     public void setCompanyName(String companyName) {
         mPreferences.edit().putString(COMPANY_NAME, companyName).apply();
     }
 
-    public String getCompanyName() {
-        return mPreferences.getString(COMPANY_NAME, "");
-    }
 
     public void setUserAvatar(String avatar) {
         mPreferences.edit().putString(AVATAR, avatar).apply();
@@ -146,9 +126,6 @@ public class PreferenceUtilities {
         mPreferences.edit().putString(KEY_CURRENT_USER_ID, userID).apply();
     }
 
-    public String getCurrentUserID() {
-        return mPreferences.getString(KEY_CURRENT_USER_ID, "");
-    }
 
     public int getCurrentUserNo() {
         return mPreferences.getInt(KEY_CURRENT_USER_NO, 0);
@@ -158,9 +135,6 @@ public class PreferenceUtilities {
         mPreferences.edit().putInt(KEY_CURRENT_USER_NO, userNo).apply();
     }
 
-    public int getCurrentIsAdmin() {
-        return mPreferences.getInt(KEY_CURRENT_USER_IS_ADMIN, 0);
-    }
 
     public void setCurrentUserIsAdmin(int isAdmin) {
         mPreferences.edit().putInt(KEY_CURRENT_USER_IS_ADMIN, isAdmin).apply();
@@ -172,10 +146,6 @@ public class PreferenceUtilities {
 
     public void putaeSortType(int aeSortType) {
         mPreferences.edit().putInt(AESORTTYPE, aeSortType).apply();
-    }
-
-    public int getaeSortType() {
-        return mPreferences.getInt(AESORTTYPE, 0);
     }
 
       /*--------------------------Set Notification----------------------------*/
@@ -244,13 +214,6 @@ public class PreferenceUtilities {
         return mPreferences.getInt(TIME_ZONE, DeviceUtilities.getTimeZoneOffset());
     }
 
-    public void clearLogin() {
-        setCurrentServiceDomain("");
-        setCurrentMobileSessionId("");
-        setCurrentCompanyNo(0);
-        mPreferences.edit().remove(KEY_CURRENT_MOBILE_SESSION_ID).apply();
-    }
-
     public void clearNotificationSetting(){
         mPreferences.edit().remove(NOTIFI_MAIL).apply();
         mPreferences.edit().remove(NOTIFI_SOUND).apply();
@@ -264,16 +227,6 @@ public class PreferenceUtilities {
         putStringValue(ACCESSTOKEN, accesstoken);
     }
 
-    public String getaccesstoken() {
-        return getStringValue(ACCESSTOKEN, "");
-    }
-    public void putBooleanValue(String KEY, boolean value) {
-        mPreferences.edit().putBoolean(KEY, value).apply();
-    }
-
-    public boolean getBooleanValue(String KEY, boolean defvalue) {
-        return mPreferences.getBoolean(KEY, defvalue);
-    }
 
     public void putStringValue(String KEY, String value) {
         mPreferences.edit().putString(KEY, value).apply();
@@ -281,22 +234,6 @@ public class PreferenceUtilities {
 
     public String getStringValue(String KEY, String defvalue) {
         return mPreferences.getString(KEY, defvalue);
-    }
-
-    public void putIntValue(String KEY, int value) {
-        mPreferences.edit().putInt(KEY, value).apply();
-    }
-
-    public int getIntValue(String KEY, int defvalue) {
-        return mPreferences.getInt(KEY, defvalue);
-    }
-
-    public void putLongValue(String KEY, long value) {
-        mPreferences.edit().putLong(KEY, value).apply();
-    }
-
-    public long getLongValue(String KEY, long defvalue) {
-        return mPreferences.getLong(KEY, defvalue);
     }
 
     public void putServerSite(String serversite) {

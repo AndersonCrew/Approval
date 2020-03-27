@@ -207,9 +207,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
         }
     }
 
-
     private final class JavaScriptExtension {
-
         @JavascriptInterface
         public void openSetting() {
             BaseActivity.Instance.callActivity(SettingActivity.class);
