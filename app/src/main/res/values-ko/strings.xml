@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">크루전자결재</string>
-    <string name="app_name_onscreen">크루전자결재</string>
 
     <!-- LoginActivity -->
 
@@ -34,32 +33,7 @@
     <!---Notification-->
     <string name="generalsettings">일반설정</string>
     <string name="notify_setting">알림설정</string>
-    <string name="notifi_setting">알림설정</string>
     <string name="notifi_time">알림 시간</string>
-    <string name="showmore">옵션 추가</string>
-    <string name="Allow">공유디데이 제거 못하게 함</string>
-    <string name="Solar">양력</string>
-    <string name="Leaf">윤달</string>
-    <string name="selectgroup">그룹 선택</string>
-    <string name="the_new_mail_has_arrived">새로운 공지사항이 도착했습니다.</string>
-
-    <string name="setting_notification_new_mail">새 메일의 알림 받기</string>
-    <string name="setting_notification_method_label">알림</string>
-    <string name="setting_notification_sound">소리</string>
-    <string name="setting_notification_vibrate">진동</string>
-    <string name="setting_notification_time_label">알림 시간</string>
-    <string name="setting_notification_time">알림 시간 사용</string>
-    <string name="setting_notification_from_time">AM 08:00</string>
-    <string name="setting_notification_to_time">PM 19:00</string>
-    <string name="setting_notification_time_error">End time must be bigger than start time.</string>
-
-    <string name="notification_message_type_1">결재 문서가 도착하였습니다</string>
-    <string name="notification_message_type_2">결재 문서가 종결되었습니다</string>
-    <string name="notification_message_type_3">결재 문서가 전결되었습니다</string>
-    <string name="notification_message_type_4">결재 문서가 수정되었습니다</string>
-    <string name="notification_message_type_5">결재 문서가 반려되었습니다</string>
-    <string name="notification_message_type_6">결재 문서가 보류되었습니다</string>
-    <string name="notification_message_type_7">결재 문서에 결재자 의견이 추가되었습니다</string>
 
 
     <!-- AUTO LOGIN -->
@@ -72,45 +46,17 @@
 
     <string name="connection_falsed">Can not connect the above address </string>
     <string name="login_empty_input">cannot be empty</string>
-    <string name="set_permissions">Set Permissions</string>
     <string name="permission_denied">Permission Denied</string>
     <string name="are_you_sure_loguot">로그아웃 하시겠습니까?</string>
-    <string name="comunity">커뮤니티</string>
 
     <string name="personal_id">사용자 아이디</string>
     <string name="email">이메일</string>
     <string name="company_name">단체 이름</string>
-    <string name="phone">전화번호</string>
     <string name="profle">내정보</string>
-    <string name="can_not_blank_title">제목을 입력해주세요</string>
-    <string name="list_view">조회 리스트</string>
-    <string name="today">"오늘"</string>
-    <string name="choose_group">그룹 선택</string>
-    <string name="detail">내용보기</string>
-    <string name="no_data">데이터가 없습니다</string>
-    <string name="enter_title">제목 입력</string>
-    <string name="enter_content">내용 입력</string>
-    <string name="select_group">그룹을 선택하십시오</string>
-    <string name="alarm">공고</string>
-    <string name="welcome_to_crewcommunity"> 크루커뮤니티를 가입해서 환영합니다.</string>
-    <string name="click_to_add_new_community">새로운 개시판을 시작해보세요</string>
-    <string name="string_company_id">Company ID</string>
-    <string name="current_password">현재 비밀번호</string>
-    <string name="new_password">새 비밀번호</string>
-    <string name="confirm_password">비밀번호 확인</string>
-    <string name="change_password">비밀번호 변경</string>
-    <string name="please_select_a_board">게시판을 선택하세요</string>
-    <string name="max_photo_size">max photo size</string>
     <string name="logout">로그아웃</string>
-    <string name="about_crewcommunity">About CrewCommunity</string>
     <string name="user_version">사용자 버젼</string>
-    <string name="lastest_version">최신버젼</string>
     <string name="confirm">확인</string>
     <string name="setting">설정</string>
-    <string name="general_settings">일반설정</string>
-    <string name="notification_settings">알림설정</string>
-    <string name="notification_method">알림타입</string>
-    <string name="notification_time">알림시간</string>
 
     <string name="getnotify">알림설정</string>
     <string name="noti_method">알림타입</string>
@@ -123,9 +69,6 @@
     <string name="notification_time_long">"알림 시간 사용 "</string>
 
     <!-- PROFILE -->
-    <string name="profile_label_name">Name</string>
-
-    <string name="profile_label_sex">Sex</string>
 
     <string name="profile_label_phone_number">휴대폰</string>
 
@@ -137,10 +80,8 @@
 
     <string name="profile_label_birthday">생일</string>
 
-    <string name="profile_label_belong">Belong To Department</string>
     <string name="profile_label_password">비밀번호 변경</string>
     <string name="profile_btn_change_password">Change</string>
-    <string name="profile_label_day_of_employment">입사일</string>
 
     <!-- CHANGE PASSWORD -->
     <string name="change_password_hint_old_password">현재 비밀번호</string>

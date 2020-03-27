@@ -16,7 +16,6 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -34,7 +33,6 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/lay_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -51,7 +49,6 @@
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:id="@+id/frbackground"
                         android:layout_width="match_parent"
                         android:layout_height="200dp">
 
@@ -195,7 +192,6 @@
                         style="@style/ProfileLayout">
 
                         <TextView
-                            android:id="@+id/lb_phone_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="@string/profile_label_phone_number"
@@ -261,9 +257,7 @@
                     </LinearLayout>
 
                     <!--LAYOUT JOIN DATE-->
-                    <LinearLayout
-                        android:id="@+id/layoutJoinDate"
-                        style="@style/ProfileLayout">
+                    <LinearLayout style="@style/ProfileLayout">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -279,9 +273,7 @@
 
                     </LinearLayout>
                     <!--LAYOUT Birthday-->
-                    <LinearLayout
-                        android:id="@+id/layout_birthday"
-                        style="@style/ProfileLayout">
+                    <LinearLayout style="@style/ProfileLayout">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -301,7 +293,6 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/textView2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/company_name"
@@ -348,7 +339,6 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:id="@+id/image_profile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CrewApproval</string>
-    <string name="app_name_onscreen">Crew\nApproval</string>
     <!-- LoginActivity -->
 
     <string name="loginActivity_message_wrong_server_site">서버에 접속할 수 없습니다.</string>
@@ -33,32 +32,7 @@
     <!---Notification-->
     <string name="generalsettings">Cài đặt chung</string>
     <string name="notify_setting">Thiết lập thông báo</string>
-    <string name="notifi_setting">Thiết lập thông báo</string>
     <string name="notifi_time">Thời gian thông báo</string>
-    <string name="Solar">Dương lịch</string>
-    <string name="Leaf">Tháng nhuận</string>
-    <string name="showmore">Thêm tùy chọn</string>
-    <string name="Allow">Không được xóa khỏi danh sách</string>
-    <string name="selectgroup">Chọn nhóm</string>
-    <string name="the_new_mail_has_arrived">Bạn vừa nhận được thông báo mới.</string>
-
-    <string name="setting_notification_new_mail">Get Notify of new mail</string>
-    <string name="setting_notification_method_label">Notification method</string>
-    <string name="setting_notification_sound">Sound</string>
-    <string name="setting_notification_vibrate">Vibrate</string>
-    <string name="setting_notification_time_label">Notification time</string>
-    <string name="setting_notification_time">Notification time</string>
-    <string name="setting_notification_from_time">AM 08:00</string>
-    <string name="setting_notification_to_time">PM 19:00</string>
-    <string name="setting_notification_time_error">End time must be bigger than start time.</string>
-
-    <string name="notification_message_type_1">결재 문서가 도착하였습니다</string>
-    <string name="notification_message_type_2">결재 문서가 종결되었습니다</string>
-    <string name="notification_message_type_3">결재 문서가 전결되었습니다</string>
-    <string name="notification_message_type_4">결재 문서가 수정되었습니다</string>
-    <string name="notification_message_type_5">결재 문서가 반려되었습니다</string>
-    <string name="notification_message_type_6">결재 문서가 보류되었습니다</string>
-    <string name="notification_message_type_7">결재 문서에 결재자 의견이 추가되었습니다</string>
 
     <!-- AUTO LOGIN -->
     <string name="auto_login_button_yes">Đồng ý</string>
@@ -70,45 +44,17 @@
 
     <string name="connection_falsed">Can not connect the above address </string>
     <string name="login_empty_input">cannot be empty</string>
-    <string name="set_permissions">Set Permissions</string>
     <string name="permission_denied">Permission Denied</string>
     <string name="are_you_sure_loguot">Bạn có muốn thoát khỏi phần mềm?</string>
-    <string name="comunity">Cộng Đồng</string>
 
     <string name="personal_id">ID người dùng</string>
     <string name="email">Hộp thư</string>
     <string name="company_name">Tên tổ chức</string>
-    <string name="phone">Số điện thoại</string>
     <string name="profle">Thông tin của tôi</string>
-    <string name="can_not_blank_title">Bạn cần nhập tiêu đề cho nội dung để tiếp tục</string>
-    <string name="list_view">Danh Sách</string>
-    <string name="today">hôm nay</string>
-    <string name="choose_group">Chọn Nhóm</string>
-    <string name="detail">Chi Tiết</string>
-    <string name="no_data">Không có dữ liệu</string>
-    <string name="enter_title">Nhập Tiêu Đề</string>
-    <string name="enter_content">Nhập Nội Dung</string>
-    <string name="select_group">Chọn Nhóm</string>
-    <string name="alarm">Thông Báo</string>
-    <string name="welcome_to_crewcommunity">chào mừng bạn đến CrewCommunity</string>
-    <string name="click_to_add_new_community">Chạm để thêm mới một Community</string>
-    <string name="string_company_id">Company ID</string>
-    <string name="current_password">Mật Khẩu Hiện Tại</string>
-    <string name="new_password">Mật Khẩu Mới</string>
-    <string name="confirm_password">Xác Nhận Mật Khẩu</string>
-    <string name="change_password">Thay Đổi Mật Khẩu</string>
-    <string name="please_select_a_board">Vui lòng chọn nhóm</string>
-    <string name="max_photo_size">max photo size</string>
     <string name="logout">Thoát</string>
-    <string name="about_crewcommunity">About CrewCommunity</string>
     <string name="user_version">Phiên bản người dùng </string>
-    <string name="lastest_version">Latest Version</string>
     <string name="confirm">Xác nhận</string>
     <string name="setting">Cài Đặt</string>
-    <string name="general_settings">Cài đặt chung</string>
-    <string name="notification_settings">Thiết lập thông báo</string>
-    <string name="notification_method">Phương pháp thông báo</string>
-    <string name="notification_time">Thời gian thông báo</string>
 
     <string name="getnotify">Nhận thông báo thư mới</string>
     <string name="noti_method">Phương pháp thông báo</string>
@@ -121,17 +67,13 @@
     <string name="notification_time_long">Thời gian nhận thông báo</string>
 
     <!-- PROFILE -->
-    <string name="profile_label_name">Tên</string>
-    <string name="profile_label_sex">Giới tính</string>
     <string name="profile_label_phone_number">Số điện thoại</string>
     <string name="profile_label_company_number">Số điện thoại công ty</string>
     <string name="profile_label_extension_number">Số mở rộng</string>
     <string name="profile_label_entrance_date">Ngày gia nhập</string>
     <string name="profile_label_birthday">Ngày sinh</string>
-    <string name="profile_label_belong">Belong To Department</string>
     <string name="profile_label_password">Mật khẩu</string>
     <string name="profile_btn_change_password">Thay đổi</string>
-    <string name="profile_label_day_of_employment">Ngày vào công ty</string>
 
     <!-- CHANGE PASSWORD -->
     <string name="change_password_hint_old_password">Mật khẩu cũ</string>

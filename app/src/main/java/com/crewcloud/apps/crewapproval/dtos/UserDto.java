@@ -4,7 +4,6 @@ package com.crewcloud.apps.crewapproval.dtos;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 
-import java.util.ArrayList;
 
 public class UserDto {
     public int Id;
@@ -16,7 +15,7 @@ public class UserDto {
     public String session;
     public String avatar;
     public String NameCompany = "";
-    public PreferenceUtilities prefs = CrewCloudApplication.getInstance().getPreferenceUtilities();
+    public PreferenceUtilities prefs;
 
     public UserDto() {
         prefs = CrewCloudApplication.getInstance().getPreferenceUtilities();

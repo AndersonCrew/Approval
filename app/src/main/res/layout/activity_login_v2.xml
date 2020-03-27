@@ -89,7 +89,6 @@
 
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/etPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
@@ -146,7 +145,6 @@
 
         <LinearLayout
             android:visibility="gone"
-            android:id="@+id/ll_login_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -166,7 +164,6 @@
                 android:textSize="17sp" />
 
             <RelativeLayout
-                android:id="@+id/login_btn_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="10dp"

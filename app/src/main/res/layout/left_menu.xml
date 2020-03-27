@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerPane"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
@@ -56,7 +55,6 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_setting"
             style="@style/button"
             android:layout_width="?actionBarSize"
             android:layout_height="?actionBarSize"
@@ -78,7 +76,6 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_dimen"
             android:layout_height="@dimen/avatar_dimen"
             android:layout_gravity="center_horizontal"
@@ -86,7 +83,6 @@
             android:scaleType="fitXY" />
 
         <TextView
-            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -94,7 +90,6 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/companyName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -111,7 +106,6 @@
 
     <!-- List of Actions (pages) -->
     <ListView
-        android:id="@+id/navList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/profileBox"
