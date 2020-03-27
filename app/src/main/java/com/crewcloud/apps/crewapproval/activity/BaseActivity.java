@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
-import com.crewcloud.apps.crewapproval.util.Util;
+import com.crewcloud.apps.crewapproval.util.Utils;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -102,7 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showNetworkDialog() {
-        if (Util.isWifiEnable()) {
+        if (Utils.isWifiEnable()) {
             DialogUtil.customAlertDialog(this, getString(R.string.no_connection_error), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
                 @Override
                 public void onOkClick(DialogInterface alertDialog) {

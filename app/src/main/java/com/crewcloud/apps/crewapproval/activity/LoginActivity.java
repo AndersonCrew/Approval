@@ -26,7 +26,7 @@ import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.SoftKeyboardDetectorView;
-import com.crewcloud.apps.crewapproval.util.Util;
+import com.crewcloud.apps.crewapproval.util.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnHasAppCallBack {
@@ -135,7 +135,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         if (mFirstLogin) {
             rlLogo = findViewById(R.id.include_logo);
 
-            if (Util.isNetworkAvailable()) {
+            if (Utils.isNetworkAvailable()) {
                 if (mFirstStart) {
                     doLogin();
                     mFirstStart = false;
@@ -149,7 +149,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     }
 
     private void doLogin() {
-        if (Util.checkStringValue(mPrefs.getCurrentMobileSessionId())) {
+        if (Utils.checkStringValue(mPrefs.getCurrentMobileSessionId())) {
             HttpRequest.getInstance().checkLogin(this);
         } else {
             rlLogo.setVisibility(View.GONE);
@@ -160,7 +160,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
 
     @Override
     public void showNetworkDialog() {
-        if (Util.isWifiEnable()) {
+        if (Utils.isWifiEnable()) {
             DialogUtil.customAlertDialog(this, getString(R.string.no_connection_error), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
                 @Override
                 public void onOkClick(DialogInterface alertDialog) {
@@ -207,9 +207,9 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     };
 
     private void showPopupAutoLogin(final String companyID, final String userID) {
-        String alert1 = Util.getString(R.string.auto_login_company_ID) + companyID;
-        String alert2 = Util.getString(R.string.auto_login_user_ID) + userID;
-        String alert3 = Util.getString(R.string.auto_login_text);
+        String alert1 = Utils.getString(R.string.auto_login_company_ID) + companyID;
+        String alert2 = Utils.getString(R.string.auto_login_user_ID) + userID;
+        String alert3 = Utils.getString(R.string.auto_login_text);
         String msg = alert1 + "\n" + alert2 + "\n\n" + alert3;
 
         DialogUtil.customAlertDialog(this, getString(R.string.auto_login_title), msg,
@@ -498,8 +498,8 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
                 "\"sound\": " + mPrefs.getNOTIFI_SOUND() + "," +
                 "\"vibrate\": " + mPrefs.getNOTIFI_VIBRATE() + "," +
                 "\"notitime\": " + mPrefs.getNOTIFI_TIME() + "," +
-                "\"starttime\": \"" + Util.getFullHour(start_time) + "\"," +
-                "\"endtime\": \"" + Util.getFullHour(end_time) + "\"" + "}";
+                "\"starttime\": \"" + Utils.getFullHour(start_time) + "\"," +
+                "\"endtime\": \"" + Utils.getFullHour(end_time) + "\"" + "}";
 
         notificationOptions = notificationOptions.trim();
         HttpRequest.getInstance().insertAndroidDevice(new BaseHTTPCallBack() {

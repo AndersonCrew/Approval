@@ -211,7 +211,7 @@ public class PreferenceUtilities {
     }
 
     public int getTIME_ZONE() {
-        return mPreferences.getInt(TIME_ZONE, DeviceUtilities.getTimeZoneOffset());
+        return mPreferences.getInt(TIME_ZONE, Utils.getTimeZoneOffset());
     }
 
     public void clearNotificationSetting(){

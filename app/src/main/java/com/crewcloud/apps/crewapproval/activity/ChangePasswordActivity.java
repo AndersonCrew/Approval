@@ -12,7 +12,7 @@ import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
 import com.crewcloud.apps.crewapproval.interfaces.OnChangePasswordCallBack;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
-import com.crewcloud.apps.crewapproval.util.Util;
+import com.crewcloud.apps.crewapproval.util.Utils;
 
 /**
  * Created by LongTran on 3/24/2017.
@@ -59,13 +59,13 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
 
     private boolean checkConfirmPassword(String originalPassword, String newPassword, String confirmPassword) {
         if (TextUtils.isEmpty(originalPassword)) {
-            Util.showShortMessage("Original Password is empty");
+            Utils.showShortMessage("Original Password is empty");
             return false;
         } else if (TextUtils.isEmpty(newPassword)) {
-            Util.showShortMessage("New Password is empty");
+            Utils.showShortMessage("New Password is empty");
             return false;
         } else if (!newPassword.equals(confirmPassword)) {
-            Util.showShortMessage("Confirm Password is not matched");
+            Utils.showShortMessage("Confirm Password is not matched");
             return false;
         }
         return true;
@@ -79,14 +79,14 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void onSuccess(String response) {
                 CrewCloudApplication.getInstance().getPreferenceUtilities().setPass(newPassword);
-                Util.showShortMessage("Change password success");
+                Utils.showShortMessage("Change password success");
                 finish();
                 System.out.println("onSuccess " + response);
             }
 
             @Override
             public void onFail(ErrorDto errorDto) {
-                Util.showShortMessage(errorDto.message);
+                Utils.showShortMessage(errorDto.message);
             }
         });
     }

@@ -70,24 +70,7 @@
                                     android:layout_height="match_parent"
                                     app:civ_border_color="#ffff"
                                     app:civ_border_width="@dimen/divider_height" />
-
-                                <!--<ImageView-->
-                                <!--android:id="@+id/btn_change_photo"-->
-                                <!--android:layout_width="36dp"-->
-                                <!--android:layout_height="36dp"-->
-                                <!--android:layout_alignParentBottom="true"-->
-                                <!--android:layout_alignParentRight="true"-->
-                                <!--android:background="@drawable/bg_circle_white_with_border"-->
-                                <!--android:scaleType="center"-->
-                                <!--android:src="@drawable/ic_camera_alt_black_18dp"-->
-                                <!--android:tint="@color/divider_color"-->
-                                <!--android:visibility="gone" />-->
                             </RelativeLayout>
-                            <!--<com.dazone.crewschedule.CustomView.FaceOverlayViewForSizeOther-->
-                            <!--android:id="@+id/avatar_imv"-->
-                            <!--android:layout_width="100dp"-->
-                            <!--android:layout_height="100dp"-->
-                            <!--android:layout_gravity="center" />-->
 
                             <TextView
                                 android:id="@+id/tv_name"

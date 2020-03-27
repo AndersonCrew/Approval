@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.crewcloud.apps.crewapproval.R;
-import com.crewcloud.apps.crewapproval.util.Statics;
+import com.crewcloud.apps.crewapproval.util.Constants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -42,7 +42,7 @@ public class ImageViewActivity extends AppCompatActivity {
     private void receiveData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String url = bundle.getString(Statics.KEY_URL, "");
+            String url = bundle.getString(Constants.KEY_URL, "");
             if (!TextUtils.isEmpty(url) && ivAvatar != null) {
                 ImageLoader.getInstance().displayImage(url, ivAvatar, optionsProfileAvatar);
             }

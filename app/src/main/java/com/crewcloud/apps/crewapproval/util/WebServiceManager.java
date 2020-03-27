@@ -5,9 +5,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
-import com.crewcloud.apps.crewapproval.activity.LoginActivity;
 import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
-import com.crewcloud.apps.crewapproval.activity.BaseActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -22,7 +20,7 @@ public class WebServiceManager {
                 try {
                     JSONObject json = new JSONObject(response.getString("d"));
 
-                    if (url.contains(Urls.URL_HAS_APPLICATION)) {
+                    if (url.contains(Config.URL_HAS_APPLICATION)) {
                         listener.onSuccess(json.toString());
                     } else {
                         int isSuccess = json.getInt("success");
@@ -35,7 +33,7 @@ public class WebServiceManager {
                             if (errorDto == null) {
 
                                 errorDto = new ErrorDto();
-                                errorDto.message = Util.getString(R.string.no_network_error);
+                                errorDto.message = Utils.getString(R.string.no_network_error);
                             }
                             listener.onFailure(errorDto);
                         }
@@ -44,7 +42,7 @@ public class WebServiceManager {
                 } catch (JSONException e) {
 
                     ErrorDto errorDto = new ErrorDto();
-                    errorDto.message = Util.getString(R.string.no_network_error);
+                    errorDto.message = Utils.getString(R.string.no_network_error);
                     listener.onFailure(errorDto);
                 }
             }

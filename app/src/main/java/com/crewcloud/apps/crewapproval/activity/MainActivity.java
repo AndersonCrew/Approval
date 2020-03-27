@@ -21,17 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.crewcloud.apps.crewapproval.BuildConfig;
-import com.crewcloud.apps.crewapproval.Constants;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.base.WebContentChromeClient;
 import com.crewcloud.apps.crewapproval.base.WebContentClient;
 import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
 import com.crewcloud.apps.crewapproval.interfaces.OnHasUpdateAppCallBack;
-import com.crewcloud.apps.crewapproval.util.DeviceUtilities;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
+import com.crewcloud.apps.crewapproval.util.Utils;
 import com.crewcloud.apps.crewapproval.util.WebClient;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
 
         PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
         int timezone = preferenceUtilities.getTIME_ZONE();
-        int Cur = DeviceUtilities.getTimeZoneOffset();
+        int Cur = Utils.getTimeZoneOffset();
         if (timezone != Cur) {
             preferenceUtilities.setTIME_ZONE(Cur);
             HttpRequest.getInstance().updateTimeZone(preferenceUtilities.getGCMregistrationid());
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
 
         CookieManager.getInstance().setCookie("http://" + domain, "skey0=" + preferenceUtilities.getCurrentMobileSessionId());
         CookieManager.getInstance().setCookie("http://" + domain, "skey1=" + "123123123123132");
-        CookieManager.getInstance().setCookie("http://" + domain, "skey2=" + DeviceUtilities.getLanguageCode());
+        CookieManager.getInstance().setCookie("http://" + domain, "skey2=" + Utils.getLanguageCode());
         CookieManager.getInstance().setCookie("http://" + domain, "skey3=" + preferenceUtilities.getCurrentCompanyNo());
 
         wvContent.loadUrl("http://" + domain + "/UI/_EAPPMobile/Main.aspx");

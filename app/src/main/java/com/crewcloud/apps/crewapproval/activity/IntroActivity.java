@@ -16,18 +16,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.crewcloud.apps.crewapproval.BuildConfig;
-import com.crewcloud.apps.crewapproval.Constants;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
-import com.crewcloud.apps.crewapproval.util.DeviceUtilities;
+import com.crewcloud.apps.crewapproval.util.Config;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
-import com.crewcloud.apps.crewapproval.util.Util;
+import com.crewcloud.apps.crewapproval.util.Utils;
 import com.crewcloud.apps.crewapproval.util.WebClient;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -51,7 +49,7 @@ public class IntroActivity extends BaseActivity {
         if (!checkPermissions()) {
             setPermissions();
         } else {
-            if (Util.isNetworkAvailable()) {
+            if (Utils.isNetworkAvailable()) {
                 Thread thread = new Thread(new UpdateRunnable());
                 thread.setDaemon(true);
                 thread.start();
@@ -132,7 +130,7 @@ public class IntroActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
-            WebClient.HasApplication_v2(DeviceUtilities.getLanguageCode(), DeviceUtilities.getTimeZoneOffset(), CrewCloudApplication.getProjectCode(),
+            WebClient.HasApplication_v2(Utils.getLanguageCode(), Utils.getTimeZoneOffset(), CrewCloudApplication.getProjectCode(),
                     "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
@@ -186,8 +184,8 @@ public class IntroActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
-            WebClient.CheckSessionUser_v2(DeviceUtilities.getLanguageCode(),
-                    DeviceUtilities.getTimeZoneOffset(), preferenceUtilities.getCurrentMobileSessionId(),
+            WebClient.CheckSessionUser_v2(Utils.getLanguageCode(),
+                    Utils.getTimeZoneOffset(), preferenceUtilities.getCurrentMobileSessionId(),
                     "http://" + preferenceUtilities.getCurrentCompanyDomain(),
                     new WebClient.OnWebClientListener() {
                         @Override
@@ -279,14 +277,14 @@ public class IntroActivity extends BaseActivity {
             final IntroActivity activity = mWeakActivity.get();
 
             if (activity != null) {
-                if (msg.what == Constants.ACTIVITY_HANDLER_NEXT_ACTIVITY) {
+                if (msg.what == Config.ACTIVITY_HANDLER_NEXT_ACTIVITY) {
                     startApplication();
-                } else if (msg.what == Constants.ACTIVITY_HANDLER_START_UPDATE) {
+                } else if (msg.what == Config.ACTIVITY_HANDLER_START_UPDATE) {
                     DialogUtil.customAlertDialog(BaseActivity.Instance, getString(R.string.string_update_content), getString(R.string.auto_login_button_yes), getString(R.string.auto_login_button_no),
                             new DialogUtil.OnAlertDialogViewClickEvent() {
                                 @Override
                                 public void onOkClick(DialogInterface alertDialog) {
-                                    new Async_DownloadApkFile(IntroActivity.this, Constants.CREWAPPROVAL).execute();
+                                    new Async_DownloadApkFile(IntroActivity.this, Config.CREWAPPROVAL).execute();
                                 }
 
                                 @Override
@@ -303,7 +301,7 @@ public class IntroActivity extends BaseActivity {
         @Override
         public void run() {
             try {
-                URL txtUrl = new URL(Constants.ROOT_URL_ANDROID + Constants.VERSION + Constants.CREWAPPROVAL + ".txt");
+                URL txtUrl = new URL(Config.ROOT_URL_ANDROID + Config.VERSION + Config.CREWAPPROVAL + ".txt");
                 HttpURLConnection urlConnection = (HttpURLConnection) txtUrl.openConnection();
 
                 urlConnection.setReadTimeout(3000);
@@ -312,17 +310,17 @@ public class IntroActivity extends BaseActivity {
 
                 String serverVersion = bufferedReader.readLine();
                 inputStream.close();
-                Util.printLogs("serverVersion: " + serverVersion);
+                Utils.printLogs("serverVersion: " + serverVersion);
                 String appVersion = BuildConfig.VERSION_NAME;
 
-                int result = Util.versionCompare(serverVersion, appVersion);
+                int result = Utils.versionCompare(serverVersion, appVersion);
                 if (result < 1) {
-                    mActivityHandler2.sendEmptyMessageDelayed(Constants.ACTIVITY_HANDLER_NEXT_ACTIVITY, 1);
+                    mActivityHandler2.sendEmptyMessageDelayed(Config.ACTIVITY_HANDLER_NEXT_ACTIVITY, 1);
                 } else {
-                    mActivityHandler2.sendEmptyMessage(Constants.ACTIVITY_HANDLER_START_UPDATE);
+                    mActivityHandler2.sendEmptyMessage(Config.ACTIVITY_HANDLER_START_UPDATE);
                 }
             } catch (Exception e) {
-                mActivityHandler2.sendEmptyMessageDelayed(Constants.ACTIVITY_HANDLER_NEXT_ACTIVITY, 1);
+                mActivityHandler2.sendEmptyMessageDelayed(Config.ACTIVITY_HANDLER_NEXT_ACTIVITY, 1);
                 e.printStackTrace();
             }
         }
@@ -365,7 +363,7 @@ public class IntroActivity extends BaseActivity {
 
             try {
                 //URL apkUrl = new URL("http://www.bizsw.co.kr:8080/Attachments/AppVn/File/" + mApkFileName + ".apk");
-                URL apkUrl = new URL(Constants.ROOT_URL_ANDROID + Constants.PACKGE + mApkFileName + ".apk");
+                URL apkUrl = new URL(Config.ROOT_URL_ANDROID + Config.PACKAGE + mApkFileName + ".apk");
                 urlConnection = (HttpURLConnection) apkUrl.openConnection();
                 inputStream = urlConnection.getInputStream();
                 bufferedInputStream = new BufferedInputStream(inputStream);

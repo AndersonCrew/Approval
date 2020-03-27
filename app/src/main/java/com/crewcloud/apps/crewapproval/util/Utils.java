@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class Util {
+public class Utils {
     public static boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) CrewCloudApplication.getInstance().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -165,5 +165,26 @@ public class Util {
 
     public static void showShortMessage(String text) {
         Toast.makeText(CrewCloudApplication.getInstance().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String getLanguageCode() {
+        Context context = CrewCloudApplication.getInstance().getBaseContext();
+        Locale locale = context.getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+
+        switch (language) {
+            case "ko":
+                return "KO";
+            case "vi":
+                return "VN";
+            case "zh":
+                return "CH";
+            default:
+                return "EN";
+        }
+    }
+
+    public static int getTimeZoneOffset() {
+        return TimeZone.getDefault().getRawOffset() / 1000 / 60;
     }
 }

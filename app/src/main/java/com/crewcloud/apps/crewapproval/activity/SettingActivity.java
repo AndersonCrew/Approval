@@ -21,7 +21,7 @@ import com.crewcloud.apps.crewapproval.interfaces.GetUserCallBack;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
-import com.crewcloud.apps.crewapproval.util.Util;
+import com.crewcloud.apps.crewapproval.util.Utils;
 import com.crewcloud.apps.crewapproval.util.WebClient;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -66,7 +66,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getUserAvatar();
         if (url.contains("/Images/Avatar.jpg"))
             HttpRequest.getInstance().GetUser(prefs.getCurrentUserNo(), this);
-        Util.showImage(url, imgAvatar);
+        Utils.showImage(url, imgAvatar);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onGetUserSuccess(Profile profile) {
         prefs.setUserAvatar(profile.avatar);
-        Util.showImage(profile.avatar, imgAvatar);
+        Utils.showImage(profile.avatar, imgAvatar);
     }
 
     @Override

@@ -21,9 +21,9 @@ import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.dtos.BelongDepartmentDTO;
 import com.crewcloud.apps.crewapproval.dtos.Profile;
 import com.crewcloud.apps.crewapproval.interfaces.GetUserCallBack;
+import com.crewcloud.apps.crewapproval.util.Constants;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
-import com.crewcloud.apps.crewapproval.util.Statics;
 import com.crewcloud.apps.crewapproval.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -110,7 +110,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileUserActivity.this, ImageViewActivity.class);
-                intent.putExtra(Statics.KEY_URL, url);
+                intent.putExtra(Constants.KEY_URL, url);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -123,7 +123,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         tvPosition.setText(getPositionName(profile));
         tvPassword.setText(prefs.getPass());
 
-        String company = prefs.getStringValue(Statics.PREFS_KEY_COMPANY_NAME, "");
+        String company = prefs.getStringValue(Constants.PREFS_KEY_COMPANY_NAME, "");
         tvCompany.setText(company);
         cellPhone = !TextUtils.isEmpty(profile.getCellPhone().trim()) ?
                 profile.getCellPhone() :

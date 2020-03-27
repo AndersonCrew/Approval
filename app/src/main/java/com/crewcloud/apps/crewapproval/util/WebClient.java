@@ -13,12 +13,6 @@ import java.util.Map;
 public class WebClient {
 
     private final static ObjectMapper mJSONObjectMapper = new ObjectMapper();
-
-    private static final String SERVICE_URL_LOGIN_V2 = "/UI/WebService/WebServiceCenter.asmx/Login_v2";
-    private static final String SERVICE_URL_LOGOUT_V2 = "/UI/WebService/WebServiceCenter.asmx/Logout_v2";
-    private static final String SERVICE_URL_CHECK_SESSION_USER_V2 = "/UI/WebService/WebServiceCenter.asmx/CheckSessionUser_v2";
-    private static final String SERVICE_URL_HAS_APPLICATION_V2 = "/UI/WebService/WebServiceCenter.asmx/HasApplication_v2";
-
     public interface OnWebClientListener {
         void onSuccess(JsonNode jsonNode);
         void onFailure();
@@ -99,36 +93,11 @@ public class WebClient {
         return "";
     }
 
-    // ----------------------------------------------------------------------------------------------
-
-    public static void Login_v2(String languageCode, int timeZoneOffset, String companyDomain, String userID, String password, String mobileOSVersion, String _domain, OnWebClientListener listener) {
-        Map<String, Object> mapParams = new HashMap<>();
-        mapParams.put("languageCode", languageCode);
-        mapParams.put("timeZoneOffset", timeZoneOffset);
-        mapParams.put("companyDomain", companyDomain);
-        mapParams.put("userID", userID);
-        mapParams.put("password", password);
-        mapParams.put("mobileOSVersion", mobileOSVersion);
-
-        String result = getJSONStringFromUrl(_domain + SERVICE_URL_LOGIN_V2, mapParams);
-
-        if (TextUtils.isEmpty(result)) {
-            listener.onFailure();
-        } else {
-            try {
-                listener.onSuccess(mJSONObjectMapper.readTree(result).get("d"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                listener.onFailure();
-            }
-        }
-    }
-
     public static void Logout_v2(String sessionId, String _domain, OnWebClientListener listener) {
         Map<String, Object> mapParams = new HashMap<>();
         mapParams.put("sessionId", sessionId);
 
-        String result = getJSONStringFromUrl(_domain + SERVICE_URL_LOGOUT_V2, mapParams);
+        String result = getJSONStringFromUrl(_domain + Config.SERVICE_URL_LOGOUT_V2, mapParams);
 
         if (TextUtils.isEmpty(result)) {
             listener.onFailure();
@@ -148,7 +117,7 @@ public class WebClient {
         mapParams.put("timeZoneOffset", timeZoneOffset);
         mapParams.put("sessionId", sessionId);
 
-        String result = getJSONStringFromUrl(_domain + SERVICE_URL_CHECK_SESSION_USER_V2, mapParams);
+        String result = getJSONStringFromUrl(_domain + Config.SERVICE_URL_CHECK_SESSION_USER_V2, mapParams);
 
         if (TextUtils.isEmpty(result)) {
             listener.onFailure();
@@ -168,7 +137,7 @@ public class WebClient {
         mapParams.put("timeZoneOffset", timeZoneOffset);
         mapParams.put("projectCode", projectCode);
 
-        String result = getJSONStringFromUrl(_domain + SERVICE_URL_HAS_APPLICATION_V2, mapParams);
+        String result = getJSONStringFromUrl(_domain + Config.SERVICE_URL_HAS_APPLICATION_V2, mapParams);
 
         if (TextUtils.isEmpty(result)) {
             listener.onFailure();
