@@ -17,16 +17,6 @@
             android:background="@color/app_base_color"
             app:theme="@style/Toolbar"
             app:titleTextColor="@android:color/white">
-
-            <!--<TextView-->
-                <!--android:id="@+id/toolbar_title"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:text="@string/app_name"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="17sp"-->
-                <!--android:textStyle="bold"/>-->
         </android.support.v7.widget.Toolbar>
 
 
@@ -36,7 +26,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <!-- The navigation drawer -->
+    <!-- The Navigation Drawer -->
     <include
         layout="@layout/left_menu"
         android:layout_width="@dimen/left_menu_width"

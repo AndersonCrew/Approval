@@ -284,7 +284,7 @@ public class IntroActivity extends BaseActivity {
                             new DialogUtil.OnAlertDialogViewClickEvent() {
                                 @Override
                                 public void onOkClick(DialogInterface alertDialog) {
-                                    new Async_DownloadApkFile(IntroActivity.this, Config.CREWAPPROVAL).execute();
+                                    new Async_DownloadApkFile(IntroActivity.this, Config.CREW_APPROVAL).execute();
                                 }
 
                                 @Override
@@ -301,7 +301,7 @@ public class IntroActivity extends BaseActivity {
         @Override
         public void run() {
             try {
-                URL txtUrl = new URL(Config.ROOT_URL_ANDROID + Config.VERSION + Config.CREWAPPROVAL + ".txt");
+                URL txtUrl = new URL(Config.ROOT_URL_ANDROID + Config.VERSION + Config.CREW_APPROVAL + ".txt");
                 HttpURLConnection urlConnection = (HttpURLConnection) txtUrl.openConnection();
 
                 urlConnection.setReadTimeout(3000);

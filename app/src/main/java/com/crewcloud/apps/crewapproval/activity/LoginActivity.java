@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_v2);
+        setContentView(R.layout.activity_login);
 
         context = this;
         mPrefs = CrewCloudApplication.getInstance().getPreferenceUtilities();

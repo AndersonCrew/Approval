@@ -11,7 +11,7 @@ object Config {
     const val ROOT_URL_ANDROID = "http://www.crewcloud.net/Android"
     const val VERSION = "/Version/"
     const val PACKAGE = "/Package/"
-    const val CREWAPPROVAL = "CrewApproval"
+    const val CREW_APPROVAL = "CrewApproval"
     const val ACTIVITY_HANDLER_NEXT_ACTIVITY = 1111
     const val ACTIVITY_HANDLER_START_UPDATE = 1112
 
