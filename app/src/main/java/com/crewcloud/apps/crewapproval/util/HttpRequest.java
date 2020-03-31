@@ -42,7 +42,6 @@ public class HttpRequest {
 
     public void login(final BaseHTTPCallBack baseHTTPCallBack, final String userID, final String password, final String companyDomain, String server_link) {
         final String url = server_link + Config.URL_GET_LOGIN;
-        Utils.printLogs(">>>User info =" + url);
         Map<String, String> params = new HashMap<>();
         params.put("languageCode", Utils.getPhoneLanguage());
         params.put("timeZoneOffset", "" + Utils.getTimeOffsetInMinute());
@@ -50,7 +49,6 @@ public class HttpRequest {
         params.put("password", password);
         params.put("userID", userID);
         params.put("mobileOSVersion", "Android " + android.os.Build.VERSION.RELEASE);
-        Utils.printLogs(">>>login =" + params.toString());
         WebServiceManager webServiceManager = new WebServiceManager();
         webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
             @Override

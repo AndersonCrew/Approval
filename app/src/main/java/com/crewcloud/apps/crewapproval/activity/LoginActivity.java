@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,27 +24,17 @@ import com.crewcloud.apps.crewapproval.interfaces.OnHasAppCallBack;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
-import com.crewcloud.apps.crewapproval.util.SoftKeyboardDetectorView;
 import com.crewcloud.apps.crewapproval.util.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnHasAppCallBack {
-    private RelativeLayout rlLogo;
-    private ImageView imgLoginLogo;
-    private TextView tvLogo;
     private EditText etDomain, etUsername, etPassword;
-    private RelativeLayout rlLogin;
+    private TextView rlLogin;
     public PreferenceUtilities mPrefs;
     private boolean mFirstLogin = true;
     private String mInputUsername, mInputPassword;
-
-    protected int mActivityNumber = 0;
     private boolean mFirstStart = false;
-
     private boolean isAutoLoginShow = false;
-
-    private Activity context;
-
     private String mRegId;
     private String msg = "";
 
@@ -53,59 +42,19 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        context = this;
         mPrefs = CrewCloudApplication.getInstance().getPreferenceUtilities();
-
-        rlLogo = findViewById(R.id.include_logo);
-        rlLogo.setVisibility(View.VISIBLE);
+        initViews();
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(accountReceiver, intentFilter);
+    }
 
-        final SoftKeyboardDetectorView softKeyboardDetectorView = new SoftKeyboardDetectorView(this);
-        addContentView(softKeyboardDetectorView, new FrameLayout.LayoutParams(-1, -1));
-
-        softKeyboardDetectorView.setOnShownKeyboard(new SoftKeyboardDetectorView.OnShownKeyboardListener() {
-            @Override
-            public void onShowSoftKeyboard() {
-                if (imgLoginLogo != null) {
-                    imgLoginLogo.setVisibility(View.GONE);
-
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tvLogo.getLayoutParams();
-                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    params.addRule(RelativeLayout.BELOW, 0);
-                    tvLogo.setLayoutParams(params);
-
-                    etPassword.setFocusable(true);
-                }
-            }
-        });
-
-        softKeyboardDetectorView.setOnHiddenKeyboard(new SoftKeyboardDetectorView.OnHiddenKeyboardListener() {
-            @Override
-            public void onHiddenSoftKeyboard() {
-                if (imgLoginLogo != null) {
-                    imgLoginLogo.setVisibility(View.VISIBLE);
-
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tvLogo.getLayoutParams();
-                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                    params.addRule(RelativeLayout.BELOW, R.id.img_login_logo);
-                    tvLogo.setLayoutParams(params);
-                }
-            }
-        });
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.myColor_PrimaryDark));
-        }
-
-        Bundle bundle = getIntent().getExtras();
-
-        if (bundle != null && bundle.getInt("count_id") != 0) {
-            mActivityNumber = bundle.getInt("count_id");
-        }
+    private void initViews() {
+        rlLogin = findViewById(R.id.btnLogin);
+        etUsername = findViewById(R.id.login_edt_username);
+        etPassword = findViewById(R.id.login_edt_password);
+        etDomain = findViewById(R.id.login_edt_server);
     }
 
     @Override
@@ -121,20 +70,14 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
             mFirstStart = true;
             mPrefs.putaeSortType(2);
         }
-        initAtStart();
+        firstChecking();
 
         if (mRegId == null || mRegId.isEmpty())
             registerInBackground();
     }
 
-    public void initAtStart() {
-        firstChecking();
-    }
-
     private void firstChecking() {
         if (mFirstLogin) {
-            rlLogo = findViewById(R.id.include_logo);
-
             if (Utils.isNetworkAvailable()) {
                 if (mFirstStart) {
                     doLogin();
@@ -152,7 +95,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         if (Utils.checkStringValue(mPrefs.getCurrentMobileSessionId())) {
             HttpRequest.getInstance().checkLogin(this);
         } else {
-            rlLogo.setVisibility(View.GONE);
             mFirstLogin = false;
             init();
         }
@@ -271,7 +213,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
                     dismissProgressDialog();
 
                     mFirstLogin = false;
-                    rlLogo.setVisibility(View.GONE);
                     init();
                 } else {
                     dismissProgressDialog();
@@ -294,12 +235,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         intent.putExtra("senderPackageName", this.getPackageName());
         intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         sendBroadcast(intent);
-
-        imgLoginLogo = findViewById(R.id.img_login_logo);
-        tvLogo = findViewById(R.id.tv_login_logo_text);
-        etUsername = findViewById(R.id.login_edt_username);
-        etPassword = findViewById(R.id.login_edt_password);
-        etDomain = findViewById(R.id.login_edt_server);
 
         etDomain.setText(new PreferenceUtilities().getDomain());
         etPassword.setText(new PreferenceUtilities().getPass());
@@ -353,60 +288,56 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     rlLogin.callOnClick();
                 }
-
                 return false;
             }
         });
 
-        rlLogin = findViewById(R.id.login_btn_login);
 
-        if (rlLogin != null) {
-            rlLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    registerInBackground();
-                    mInputUsername = etUsername.getText().toString();
-                    mInputPassword = etPassword.getText().toString();
-                    domain = etDomain.getText().toString();
+        rlLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerInBackground();
+                mInputUsername = etUsername.getText().toString();
+                mInputPassword = etPassword.getText().toString();
+                domain = etDomain.getText().toString();
 
-                    if (TextUtils.isEmpty(checkStringValue(domain, mInputUsername, mInputPassword))) {
-                        domain = getServerSite(domain);
-                        String company_domain = domain;
-                        if (!company_domain.startsWith("http")) {
-                            domain = "http://" + domain;
-                        }
-
-                        String temp_server_site = domain;
-                        if (temp_server_site.contains(".bizsw.co.kr")) {
-                            temp_server_site = "http://www.bizsw.co.kr:8080";
-                        } else {
-                            if (temp_server_site.contains("crewcloud")) {
-                                temp_server_site = "http://www.crewcloud.net";
-                            }
-                        }
-
-                        showProgressDialog();
-                        PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
-                        preferenceUtilities.setCurrentServiceDomain(temp_server_site); // Domain
-                        preferenceUtilities.setCurrentCompanyDomain(company_domain); // group ID
-
-                        HttpRequest.getInstance().login(LoginActivity.this, mInputUsername, mInputPassword, company_domain, temp_server_site);
-                    } else {
-                        DialogUtil.customAlertDialog(context, checkStringValue(domain, mInputUsername, mInputPassword), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
-                            @Override
-                            public void onOkClick(DialogInterface alertDialog) {
-                                CrewCloudApplication.getInstance().getPreferenceUtilities().putServerSite(domain);
-                            }
-
-                            @Override
-                            public void onCancelClick() {
-
-                            }
-                        });
+                if (TextUtils.isEmpty(checkStringValue(domain, mInputUsername, mInputPassword))) {
+                    domain = getServerSite(domain);
+                    String company_domain = domain;
+                    if (!company_domain.startsWith("http")) {
+                        domain = "http://" + domain;
                     }
+
+                    String temp_server_site = domain;
+                    if (temp_server_site.contains(".bizsw.co.kr")) {
+                        temp_server_site = "http://www.bizsw.co.kr:8080";
+                    } else {
+                        if (temp_server_site.contains("crewcloud")) {
+                            temp_server_site = "http://www.crewcloud.net";
+                        }
+                    }
+
+                    showProgressDialog();
+                    PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
+                    preferenceUtilities.setCurrentServiceDomain(temp_server_site); // Domain
+                    preferenceUtilities.setCurrentCompanyDomain(company_domain); // group ID
+
+                    HttpRequest.getInstance().login(LoginActivity.this, mInputUsername, mInputPassword, company_domain, temp_server_site);
+                } else {
+                    DialogUtil.customAlertDialog(LoginActivity.this, checkStringValue(domain, mInputUsername, mInputPassword), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
+                        @Override
+                        public void onOkClick(DialogInterface alertDialog) {
+                            CrewCloudApplication.getInstance().getPreferenceUtilities().putServerSite(domain);
+                        }
+
+                        @Override
+                        public void onCancelClick() {
+
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
     private String checkStringValue(String server_site, String username, String password) {
@@ -475,7 +406,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
 
     public void insertAndroidDevice() {
         if (mRegId == null || mRegId.isEmpty()) {
-            Toast.makeText(context, R.string.string_cant_get_token, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.string_cant_get_token, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -513,7 +444,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
 
             @Override
             public void onHTTPFail(ErrorDto errorDto) {
-                Toast.makeText(context, errorDto.message, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, errorDto.message, Toast.LENGTH_LONG).show();
                 Log.d(">>> insert token fail", errorDto.message);
             }
         }, mRegId, notificationOptions);
@@ -522,7 +453,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     private void registerInBackground() {
         new register().execute("");
     }
-
 
     public class register extends AsyncTask<String, Void, Void> {
         @Override
@@ -552,9 +482,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     public void onHTTPFail(ErrorDto errorDto) {
         if (mFirstLogin) {
             dismissProgressDialog();
-
             mFirstLogin = false;
-            rlLogo.setVisibility(View.GONE);
             init();
         } else {
             dismissProgressDialog();
@@ -577,7 +505,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     public void noHas(ErrorDto errorDto) {
         if (mFirstLogin) {
             mFirstLogin = false;
-            rlLogo.setVisibility(View.GONE);
             init();
         } else {
             dismissProgressDialog();

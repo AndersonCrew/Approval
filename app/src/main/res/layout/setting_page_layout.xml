@@ -70,7 +70,7 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle
+        <com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle
             android:layout_width="@dimen/setting_page_icon_under"
             android:layout_height="@dimen/setting_page_icon_under"
             android:layout_gravity="center"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/menuleft_ic_setting_white" />
-        </com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle>
+        </com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle>
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
         android:orientation="horizontal">
 
 
-        <com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle
+        <com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle
             android:layout_width="@dimen/setting_page_icon_under"
             android:layout_height="@dimen/setting_page_icon_under"
             android:layout_gravity="center"
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/add_btn_alarm" />
-        </com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle>
+        </com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle>
 
         <TextView
             android:layout_width="wrap_content"
@@ -148,7 +148,7 @@
         android:orientation="horizontal">
 
 
-        <com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle
+        <com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle
             android:layout_width="@dimen/setting_page_icon_under"
             android:layout_height="@dimen/setting_page_icon_under"
             android:layout_gravity="center"
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_info_outline_white_18dp" />
-        </com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle>
+        </com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle>
 
         <TextView
             android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
         android:orientation="horizontal">
 
 
-        <com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle
+        <com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle
             android:layout_width="@dimen/setting_page_icon_under"
             android:layout_height="@dimen/setting_page_icon_under"
             android:layout_gravity="center"
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/setting_ic_logout" />
-        </com.crewcloud.apps.crewapproval.view.RoundedLayoutCircle>
+        </com.crewcloud.apps.crewapproval.custom_view.RoundedLayoutCircle>
 
         <TextView
             android:layout_width="wrap_content"

@@ -24,4 +24,8 @@ object Config {
     const val SERVICE_URL_LOGOUT_V2 = "/UI/WebService/WebServiceCenter.asmx/Logout_v2"
     const val SERVICE_URL_CHECK_SESSION_USER_V2 = "/UI/WebService/WebServiceCenter.asmx/CheckSessionUser_v2"
     const val SERVICE_URL_HAS_APPLICATION_V2 = "/UI/WebService/WebServiceCenter.asmx/HasApplication_v2"
+
+    /*URL*/
+    const val WEB_SERVICE_CENTER = "/UI/WebService/WebServiceCenter.asmx/"
+    const val EAPP_MOBILE_SERVICE = "/UI/_EAPPMobile/EAPPMobileService.asmx/"
 }
