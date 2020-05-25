@@ -29,6 +29,7 @@ import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
 import com.crewcloud.apps.crewapproval.interfaces.OnHasUpdateAppCallBack;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
+import com.crewcloud.apps.crewapproval.util.PermissionUtil;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.Utils;
 import com.crewcloud.apps.crewapproval.util.WebClient;
@@ -42,6 +43,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
     private WebView wvContent = null;
     private ProgressBar mProgressBar;
     private final int UPDATE_PERMISSIONS_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
     }
 
     private boolean mIsBackPressed = false;
+
     private static class ActivityHandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
 
@@ -309,50 +313,15 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
     private DownloadListener mDownloadListener = new DownloadListener() {
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimeType, long contentLength) {
-            String fileName = parseContentDisposition(contentDisposition);
-            Uri uriToDownload = Uri.parse(url);
-
-            DownloadManager.Request fileDownloadRequest = new DownloadManager.Request(uriToDownload);
-            fileDownloadRequest.setTitle(fileName);
-            fileDownloadRequest.setDescription("전자결재 첨부파일 다운로드");
-            fileDownloadRequest.setDestinationInExternalPublicDir("/Download", fileName);
-            fileDownloadRequest.setVisibleInDownloadsUi(true);
-            fileDownloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-            Environment.getExternalStoragePublicDirectory("/Download").mkdir();
-            mFileDownloadManager.enqueue(fileDownloadRequest);
-
-            Toast.makeText(MainActivity.this, "다운로드를 시작합니다.", Toast.LENGTH_SHORT).show();
-        }
-
-        private String parseContentDisposition(String contentDisposition) {
-            try {
-                Matcher m = CONTENT_DISPOSITION_PATTERN.matcher(contentDisposition);
-                String fileName = "";
-
-                while (m.find()) {
-                    fileName = m.group(0);
-                    fileName = fileName.substring(fileName.indexOf("=") + 1);
-
-                    if (fileName.endsWith(";")) {
-                        fileName = fileName.substring(0, fileName.length() - 2);
-                    }
-
-                    if (fileName.startsWith("\"")) {
-                        fileName = fileName.substring(1, fileName.length() - 2);
-                    }
-
-                    if (fileName.startsWith("UTF-8''")) {
-                        fileName = fileName.substring(7);
-                    }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (PermissionUtil.INSTANCE.checkPermissions(MainActivity.this, PermissionUtil.INSTANCE.getWriteExternal())) {
+                    downloadDialog(url, userAgent, contentDisposition, mimeType);
+                } else {
+                    PermissionUtil.INSTANCE.requestPermissions(MainActivity.this, 1, PermissionUtil.INSTANCE.getWriteExternal());
                 }
-
-                return java.net.URLDecoder.decode(fileName, "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                downloadDialog(url, userAgent, contentDisposition, mimeType);
             }
-
-            return "";
         }
     };
 
@@ -475,5 +444,56 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
                 mProgressDialog.dismiss();
             }
         }
+    }
+
+    private String parseContentDisposition(String contentDisposition) {
+        try {
+            Matcher m = CONTENT_DISPOSITION_PATTERN.matcher(contentDisposition);
+            String fileName = "";
+
+            while (m.find()) {
+                fileName = m.group(0);
+                fileName = fileName.substring(fileName.indexOf("=") + 1);
+
+                if (fileName.endsWith(";")) {
+                    fileName = fileName.substring(0, fileName.length() - 2);
+                }
+
+                if (fileName.startsWith("\"")) {
+                    fileName = fileName.substring(1, fileName.length() - 2);
+                }
+
+                if (fileName.startsWith("UTF-8''")) {
+                    fileName = fileName.substring(7);
+                }
+            }
+
+            return java.net.URLDecoder.decode(fileName, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    private void downloadDialog(String url, String userAgent, String contentDisposition, String mimeType) {
+        String fileName = parseContentDisposition(contentDisposition);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        //cookie
+        String cookie = CookieManager.getInstance().getCookie(url);
+        //Add cookie and User-Agent to request
+        request.addRequestHeader("Cookie", cookie);
+        request.addRequestHeader("User-Agent", userAgent);
+        //file scanned by MediaScannar
+        request.allowScanningByMediaScanner();
+        //Download is visible and its progress, after completion too.
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        //DownloadManager created
+        DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        //Saving file in Download folder
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        //download enqued
+        downloadmanager.enqueue(request);
+        Toast.makeText(MainActivity.this, "다운로드를 시작합니다.", Toast.LENGTH_SHORT).show();
     }
 }

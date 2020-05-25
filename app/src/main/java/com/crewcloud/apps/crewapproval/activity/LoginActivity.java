@@ -36,7 +36,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     private boolean mFirstStart = false;
     private boolean isAutoLoginShow = false;
     private String mRegId;
-    private String msg = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -464,11 +463,8 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
             try {
                 if (mRegId == null || mRegId.isEmpty())
                     mRegId = FirebaseInstanceId.getInstance().getToken();
-                if (mRegId == null || mRegId.isEmpty())
-                    mRegId = FirebaseInstanceId.getInstance().getToken();
-                msg = "Device registered, registration ID=" + mRegId;
             } catch (Exception ex) {
-                msg = "Error :" + ex.getMessage();
+                ex.printStackTrace();
             }
             return null;
         }
