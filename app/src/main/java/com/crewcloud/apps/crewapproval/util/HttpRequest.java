@@ -10,6 +10,7 @@ import com.crewcloud.apps.crewapproval.dtos.Profile;
 import com.crewcloud.apps.crewapproval.dtos.UserDto;
 import com.crewcloud.apps.crewapproval.interfaces.BaseHTTPCallBack;
 import com.crewcloud.apps.crewapproval.interfaces.GetUserCallBack;
+import com.crewcloud.apps.crewapproval.interfaces.ICheckSSL;
 import com.crewcloud.apps.crewapproval.interfaces.OnAutoLoginCallBack;
 import com.crewcloud.apps.crewapproval.interfaces.OnChangePasswordCallBack;
 import com.crewcloud.apps.crewapproval.interfaces.OnHasUpdateAppCallBack;
@@ -36,16 +37,16 @@ public class HttpRequest {
             mInstance = new HttpRequest();
         }
 
-        root_link = CrewCloudApplication.getInstance().getPreferenceUtilities().getServerSite();
+        root_link = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain();
         return mInstance;
     }
 
-    public void login(final BaseHTTPCallBack baseHTTPCallBack, final String userID, final String password, final String companyDomain, String server_link) {
-        final String url = server_link + Config.URL_GET_LOGIN;
+    public void login(final BaseHTTPCallBack baseHTTPCallBack, final String userID, final String password) {
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_GET_LOGIN;
         Map<String, String> params = new HashMap<>();
         params.put("languageCode", Utils.getPhoneLanguage());
         params.put("timeZoneOffset", "" + Utils.getTimeOffsetInMinute());
-        params.put("companyDomain", companyDomain);
+        params.put("companyDomain", CrewCloudApplication.getInstance().getPreferenceUtilities().getCompanyName());
         params.put("password", password);
         params.put("userID", userID);
         params.put("mobileOSVersion", "Android " + android.os.Build.VERSION.RELEASE);
@@ -70,7 +71,6 @@ public class HttpRequest {
                 PreferenceUtilities preferenceUtilities = new PreferenceUtilities();
                 preferenceUtilities.setName(userID);
                 preferenceUtilities.setPass(password);
-                preferenceUtilities.setDomain(companyDomain);
                 baseHTTPCallBack.onHTTPSuccess();
             }
 
@@ -112,12 +112,12 @@ public class HttpRequest {
         });
     }
 
-    public void AutoLogin(final String companyDomain, String userID, String server_link, final OnAutoLoginCallBack callBack) {
-        final String url = server_link + Config.URL_AUTO_LOGIN;
+    public void AutoLogin(String userID, final OnAutoLoginCallBack callBack) {
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_AUTO_LOGIN;
         Map<String, String> params = new HashMap<>();
         params.put("languageCode", Utils.getPhoneLanguage());
         params.put("timeZoneOffset", "" + Utils.getTimeOffsetInMinute());
-        params.put("companyDomain", companyDomain);
+        params.put("companyDomain", CrewCloudApplication.getInstance().getPreferenceUtilities().getCompanyName());
         params.put("userID", userID);
         params.put("mobileOSVersion", "Android " + android.os.Build.VERSION.RELEASE);
         WebServiceManager webServiceManager = new WebServiceManager();
@@ -137,7 +137,6 @@ public class HttpRequest {
                 userDto.prefs.setEmail(userDto.MailAddress);
                 userDto.prefs.setCurrentUserID(userDto.userID);
                 userDto.prefs.setUserAvatar(userDto.avatar);
-                userDto.prefs.setCurrentCompanyDomain(companyDomain);
                 callBack.OnAutoLoginSuccess(response);
             }
 
@@ -150,7 +149,7 @@ public class HttpRequest {
 
     /*Insert Token*/
     public static void insertAndroidDevice(final BaseHTTPCallBack callBack, String regid, String json) {
-        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + Config.URL_INSERT_ANDROID_DEVICE;
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_INSERT_ANDROID_DEVICE;
 
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
@@ -175,7 +174,7 @@ public class HttpRequest {
 
     /*Update Token*/
     public void updateAndroidDevice(String regid, String json) {
-        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + Config.URL_UPDATE_ANDROID_DEVICE;
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_UPDATE_ANDROID_DEVICE;
 
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
@@ -197,7 +196,7 @@ public class HttpRequest {
 
     /*Delete Token*/
     public static void deleteAndroidDevice(final BaseHTTPCallBack callBack) {
-        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + Config.URL_DELETE_ANDROID_DEVICE;
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_DELETE_ANDROID_DEVICE;
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("timeZoneOffset", "" + Utils.getTimezoneOffsetInMinutes());
@@ -218,7 +217,7 @@ public class HttpRequest {
 
     /*Update Timezone*/
     public static void updateTimeZone(String regid) {
-        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + Config.URL_UPDATE_TIMEZONE_ANDROID_DEVICE;
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_UPDATE_TIMEZONE_ANDROID_DEVICE;
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("timeZoneOffset", "" + Utils.getTimezoneOffsetInMinutes());
@@ -263,7 +262,7 @@ public class HttpRequest {
 
     /*Get BadgeCount*/
     public void getBadgeCount() {
-        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain() + Config.URL_GET_BADGE_COUNT;
+        final String url = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + Config.URL_GET_BADGE_COUNT;
         Map<String, String> params = new HashMap<>();
         params.put("sessionId", "" + CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentMobileSessionId());
         params.put("timeZoneOffset", "" + Utils.getTimezoneOffsetInMinutes());
@@ -296,24 +295,20 @@ public class HttpRequest {
         final String url = "http://mobileupdate.crewcloud.net/WebServiceMobile.asmx/Mobile_Version";
         Map<String, String> params = new HashMap<>();
 
-        String domain = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain();
-        domain = domain.replace("http://", "");
         params.put("MobileType", "Android");
-        params.put("Domain", domain);
+        params.put("Domain", CrewCloudApplication.getInstance().getPreferenceUtilities().getCompanyName());
         params.put("Applications", "CrewApproval");
-        Log.d(">>>Update", params.toString());
         WebServiceManager webServiceManager = new WebServiceManager();
         webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
             @Override
             public void onSuccess(String response) {
-                Log.d(">>>Update", response);
                 try {
                     String appVersion = BuildConfig.VERSION_NAME;
                     JSONObject json = new JSONObject(response);
                     String version = json.getString("version");
                     if(version.isEmpty()) {
                         callBack.noHas(new ErrorDto());
-                    }else {
+                    } else {
                         if (callBack != null) {
                             if (Utils.versionCompare(version, appVersion) > 0) {
                                 String url = json.getString("packageUrl");
@@ -373,6 +368,34 @@ public class HttpRequest {
                 if (callBack != null) {
                     callBack.onFail(error);
                 }
+            }
+        });
+    }
+
+    /*Check SSL*/
+    public void checkSSL(final ICheckSSL checkSSL) {
+        final String url = Config.URL_CHECK_SSL;
+        Map<String, String> params = new HashMap<>();
+        params.put("Domain", CrewCloudApplication.getInstance().getPreferenceUtilities().getCompanyName());
+        params.put("Applications", "CrewApproval");
+
+        WebServiceManager webServiceManager = new WebServiceManager();
+        webServiceManager.doJsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new WebServiceManager.RequestListener<String>() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean hasSSL = jsonObject.getBoolean("SSL");
+                    CrewCloudApplication.getInstance().getPreferenceUtilities().putBooleanValue(Constants.HAS_SSL, hasSSL);
+                    checkSSL.hasSSL(hasSSL);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(ErrorDto error) {
+                checkSSL.checkSSLError(error);
             }
         });
     }

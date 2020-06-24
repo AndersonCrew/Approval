@@ -126,7 +126,7 @@ public class Utils {
                 Picasso.with(view.getContext()).load(url).error(R.drawable.avatar).into(view);
             }
         } else {
-            String path = CrewCloudApplication.getInstance().getPreferenceUtilities().getCurrentServiceDomain();
+            String path = CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain();
             Picasso.with(view.getContext()).load(path + url).error(R.drawable.avatar).into(view);
         }
     }
@@ -186,5 +186,30 @@ public class Utils {
 
     public static int getTimeZoneOffset() {
         return TimeZone.getDefault().getRawOffset() / 1000 / 60;
+    }
+
+    public static String setServerSite(String domain) {
+        String[] domains = domain.split("[.]");
+        if (domain.contains(".bizsw.co.kr") && !domain.contains("8080")) {
+            domain =  domain.replace(".bizsw.co.kr", ".bizsw.co.kr:8080");
+        }
+
+        if (domains.length == 1) {
+            domain = domains[0] + ".crewcloud.net";
+        }
+
+        if(domain.startsWith("http://")){
+            domain = domain.replace("http://", "");
+        }
+
+        if(domain.startsWith("https://")) {
+            domain = domain.replace("https://", "");
+        }
+
+        String head = CrewCloudApplication.getInstance().getPreferenceUtilities().getBooleanValue(Constants.HAS_SSL, false) ? "https://" : "http://";
+        String domainCompany = head + domain;
+        CrewCloudApplication.getInstance().getPreferenceUtilities().putStringValue(Constants.DOMAIN, domainCompany);
+        CrewCloudApplication.getInstance().getPreferenceUtilities().putStringValue(Constants.COMPANY_NAME, domain);
+        return domainCompany;
     }
 }

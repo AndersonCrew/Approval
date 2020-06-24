@@ -134,7 +134,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             final PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
             WebClient.Logout_v2(preferenceUtilities.getCurrentMobileSessionId(),
-                    "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
+                    preferenceUtilities.getDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
                         }
@@ -153,8 +153,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
             preferenceUtilities.setCurrentMobileSessionId("");
             preferenceUtilities.setCurrentCompanyNo(0);
-            preferenceUtilities.setCurrentServiceDomain("");
-            preferenceUtilities.setCurrentCompanyDomain("");
             preferenceUtilities.setCurrentUserID("");
             preferenceUtilities.setUserAvatar("");
             preferenceUtilities.clearNotificationSetting();

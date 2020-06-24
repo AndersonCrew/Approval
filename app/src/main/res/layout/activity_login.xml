@@ -1,117 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:id="@+id/llMain"
     android:background="@color/app_background_color"
     android:fillViewport="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        android:padding="30dp"
-        android:orientation="vertical"
+    android:orientation="vertical"
+    android:padding="30dp">
+    <!--Logo-->
+    <ImageView
+        android:id="@+id/img_login_logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--Logo-->
-        <ImageView
-            android:id="@+id/img_login_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="130dp"
-            android:visibility="visible"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/loading_ic_approval" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/loading_ic_approval"
+        android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tv_login_logo_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen_10_20"
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tv_login_logo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10_20"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-        <!--Domain-->
-        <EditText
-            android:id="@+id/login_edt_server"
+    <!--Domain-->
+    <EditText
+        android:id="@+id/login_edt_server"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="25dp"
+        android:background="@null"
+        android:hint="@string/string_server_site"
+        android:inputType="text"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textColorHint="#A0FFFFFF"
+        android:textSize="17sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="#A0FFFFFF" />
+
+    <!--Username-->
+    <EditText
+        android:id="@+id/login_edt_username"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        android:hint="@string/login_username"
+        android:inputType="text"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textColorHint="#A0FFFFFF"
+        android:textCursorDrawable="@null"
+        android:textSize="17sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="#A0FFFFFF" />
+
+    <!--Password-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:hintEnabled="false"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/login_edt_password"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="@null"
-            android:layout_marginTop="25dp"
-            android:hint="@string/string_server_site"
-            android:inputType="text"
+            android:hint="@string/login_password"
+            android:inputType="textPassword"
             android:paddingLeft="5dp"
-            android:singleLine="true"
             android:textColor="@android:color/white"
             android:textColorHint="#A0FFFFFF"
             android:textSize="17sp" />
+    </android.support.design.widget.TextInputLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.6dp"
-            android:background="#A0FFFFFF" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="#A0FFFFFF" />
 
-        <!--Username-->
-        <EditText
-            android:id="@+id/login_edt_username"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:layout_marginTop="5dp"
-            android:background="@null"
-            android:hint="@string/login_username"
-            android:inputType="text"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textColor="@android:color/white"
-            android:textColorHint="#A0FFFFFF"
-            android:textCursorDrawable="@null"
-            android:textSize="17sp" />
+    <!--Button-->
+    <TextView
+        android:id="@+id/btnLogin"
+        style="@style/LoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="@string/login_login"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.6dp"
-            android:background="#A0FFFFFF" />
-
-        <!--Password-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false"
-            android:layout_marginTop="5dp"
-            app:passwordToggleEnabled="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/login_edt_password"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:background="@null"
-                android:hint="@string/login_password"
-                android:inputType="textPassword"
-                android:paddingLeft="5dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="#A0FFFFFF"
-                android:textSize="17sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.6dp"
-            android:background="#A0FFFFFF" />
-
-        <!--Button-->
-        <TextView
-            android:id="@+id/btnLogin"
-            style="@style/LoginButton"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:text="@string/login_login"
-            android:textColor="#ffffff"
-            android:textSize="17sp" />
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

@@ -23,6 +23,7 @@ import com.crewcloud.apps.crewapproval.BuildConfig;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.util.Config;
+import com.crewcloud.apps.crewapproval.util.Constants;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.Utils;
@@ -45,6 +46,14 @@ public class IntroActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        if(!CrewCloudApplication.getInstance().getPreferenceUtilities().getBooleanValue(Constants.HAS_CLEAR_DATA_CHECK_SSL, false)) {
+            PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
+            preferenceUtilities.setCurrentMobileSessionId("");
+            preferenceUtilities.setCurrentCompanyNo(0);
+            preferenceUtilities.setCurrentUserID("");
+            preferenceUtilities.putBooleanValue(Constants.HAS_CLEAR_DATA_CHECK_SSL, true);
+        }
 
         if (!checkPermissions()) {
             setPermissions();
@@ -131,7 +140,7 @@ public class IntroActivity extends BaseActivity {
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
             WebClient.HasApplication_v2(Utils.getLanguageCode(), Utils.getTimeZoneOffset(), CrewCloudApplication.getProjectCode(),
-                    "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
+                    preferenceUtilities.getDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
                             try {
@@ -177,7 +186,6 @@ public class IntroActivity extends BaseActivity {
     }
 
     private class WebClientAsync_CheckSessionUser_v2 extends AsyncTask<Void, Void, Void> {
-        private boolean mIsFailed;
         private boolean mIsSuccess;
 
         @Override
@@ -186,11 +194,10 @@ public class IntroActivity extends BaseActivity {
 
             WebClient.CheckSessionUser_v2(Utils.getLanguageCode(),
                     Utils.getTimeZoneOffset(), preferenceUtilities.getCurrentMobileSessionId(),
-                    "http://" + preferenceUtilities.getCurrentCompanyDomain(),
+                    preferenceUtilities.getDomain(),
                     new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
-                            mIsFailed = false;
 
                             try {
                                 mIsSuccess = (jsonNode.get("success").asInt() == 1);
@@ -202,7 +209,6 @@ public class IntroActivity extends BaseActivity {
 
                         @Override
                         public void onFailure() {
-                            mIsFailed = true;
                             mIsSuccess = false;
                         }
                     });
@@ -237,7 +243,7 @@ public class IntroActivity extends BaseActivity {
 
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
             WebClient.Logout_v2(preferenceUtilities.getCurrentMobileSessionId(),
-                    "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
+                    preferenceUtilities.getDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
                         }
@@ -257,8 +263,6 @@ public class IntroActivity extends BaseActivity {
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
             preferenceUtilities.setCurrentMobileSessionId("");
             preferenceUtilities.setCurrentCompanyNo(0);
-            preferenceUtilities.setCurrentServiceDomain("");
-            preferenceUtilities.setCurrentCompanyDomain("");
             preferenceUtilities.setCurrentUserID("");
 
             finish();

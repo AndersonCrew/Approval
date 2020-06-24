@@ -1,6 +1,5 @@
 package com.crewcloud.apps.crewapproval.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -103,7 +102,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     private void fillData(Profile profile) {
         PreferenceUtilities prefs = new PreferenceUtilities();
         emailAddress = profile.mailAddress;
-        final String url = prefs.getCurrentServiceDomain() + profile.getAvatar();
+        final String url = prefs.getDomain() + profile.getAvatar();
         ImageLoader.getInstance().displayImage(url, imgAvatar);
 
         imgAvatar.setOnClickListener(new View.OnClickListener() {

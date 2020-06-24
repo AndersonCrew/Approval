@@ -9,8 +9,6 @@ import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 public class PreferenceUtilities {
     private SharedPreferences mPreferences;
 
-    private final String KEY_CURRENT_SERVICE_DOMAIN = "currentServiceDomain";
-    private final String KEY_CURRENT_COMPANY_DOMAIN = "currentCompanyDomain";
     private final String KEY_CURRENT_COMPANY_NO = "currentCompanyNo";
     private final String KEY_CURRENT_MOBILE_SESSION_ID = "currentMobileSessionId";
     private final String KEY_CURRENT_USER_ID = "currentUserID";
@@ -32,30 +30,12 @@ public class PreferenceUtilities {
     private final String EMAIL = "email";
     private final String COMPANY_NAME = "companyname";
     private final String AVATAR = "avatar";
-    private final String DOMAIN = "domain";
     private final String PASS = "pass";
     private final String NAME = "name";
 
-    private static final String SERVERSITE = "serversite";
     private static final String ACCESSTOKEN = "accesstoken";
     public PreferenceUtilities() {
         mPreferences = CrewCloudApplication.getInstance().getApplicationContext().getSharedPreferences("CrewApproval_Prefs", Context.MODE_PRIVATE);
-    }
-
-    public void setCurrentServiceDomain(String domain) {
-        mPreferences.edit().putString(KEY_CURRENT_SERVICE_DOMAIN, domain).apply();
-    }
-
-    public String getCurrentServiceDomain() {
-        return mPreferences.getString(KEY_CURRENT_SERVICE_DOMAIN, "");
-    }
-
-    public void setCurrentCompanyDomain(String domain) {
-        mPreferences.edit().putString(KEY_CURRENT_COMPANY_DOMAIN, domain).apply();
-    }
-
-    public String getCurrentCompanyDomain() {
-        return mPreferences.getString(KEY_CURRENT_COMPANY_DOMAIN, "");
     }
 
     public void setCurrentCompanyNo(int companyNo) {
@@ -98,12 +78,12 @@ public class PreferenceUtilities {
         return mPreferences.getString(AVATAR, "");
     }
 
-    public void setDomain(String domain) {
-        mPreferences.edit().putString(DOMAIN, domain).apply();
+    public String getDomain() {
+        return mPreferences.getString(Constants.DOMAIN, "");
     }
 
-    public String getDomain() {
-        return mPreferences.getString(DOMAIN, "");
+    public String getCompanyName() {
+        return mPreferences.getString(Constants.COMPANY_NAME, "");
     }
 
     public void setPass(String pass) {
@@ -236,12 +216,11 @@ public class PreferenceUtilities {
         return mPreferences.getString(KEY, defvalue);
     }
 
-    public void putServerSite(String serversite) {
-        putStringValue(SERVERSITE, serversite);
+    public void putBooleanValue(String key, boolean value) {
+        mPreferences.edit().putBoolean(key, value).apply();
     }
 
-
-    public String getServerSite() {
-        return getStringValue(SERVERSITE, "");
+    public boolean getBooleanValue(String key, boolean defaultValue) {
+        return mPreferences.getBoolean(key, defaultValue);
     }
 }

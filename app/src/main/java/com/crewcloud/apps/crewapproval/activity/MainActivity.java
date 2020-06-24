@@ -43,7 +43,6 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -133,14 +132,13 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
 
         PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
-        String domain = preferenceUtilities.getCurrentCompanyDomain();
 
-        CookieManager.getInstance().setCookie("http://" + domain, "skey0=" + preferenceUtilities.getCurrentMobileSessionId());
-        CookieManager.getInstance().setCookie("http://" + domain, "skey1=" + "123123123123132");
-        CookieManager.getInstance().setCookie("http://" + domain, "skey2=" + Utils.getLanguageCode());
-        CookieManager.getInstance().setCookie("http://" + domain, "skey3=" + preferenceUtilities.getCurrentCompanyNo());
+        CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey0=" + preferenceUtilities.getCurrentMobileSessionId());
+        CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey1=" + "123123123123132");
+        CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey2=" + Utils.getLanguageCode());
+        CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey3=" + preferenceUtilities.getCurrentCompanyNo());
 
-        wvContent.loadUrl("http://" + domain + "/UI/_EAPPMobile/Main.aspx");
+        wvContent.loadUrl(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + "/UI/_EAPPMobile/Main.aspx");
 
     }
 
@@ -239,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
 
             WebClient.Logout_v2(preferenceUtilities.getCurrentMobileSessionId(),
-                    "http://" + preferenceUtilities.getCurrentCompanyDomain(), new WebClient.OnWebClientListener() {
+                    preferenceUtilities.getDomain(), new WebClient.OnWebClientListener() {
                         @Override
                         public void onSuccess(JsonNode jsonNode) {
 
@@ -260,8 +258,6 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
             preferenceUtilities.setCurrentMobileSessionId("");
             preferenceUtilities.setCurrentCompanyNo(0);
-            preferenceUtilities.setCurrentServiceDomain("");
-            preferenceUtilities.setCurrentCompanyDomain("");
             preferenceUtilities.setCurrentUserID("");
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();

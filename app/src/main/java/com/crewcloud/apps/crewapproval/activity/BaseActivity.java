@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static BaseActivity Instance;
     public ImageLoader mImageLoader = ImageLoader.getInstance();
     private Dialog mProgressDialog;
-    protected String domain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         enableHomeAction();
 
-        domain = "http://google.com";
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .threadPoolSize(5)
                 .denyCacheImageMultipleSizesInMemory()

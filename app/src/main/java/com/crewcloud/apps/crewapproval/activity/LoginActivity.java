@@ -1,9 +1,8 @@
 package com.crewcloud.apps.crewapproval.activity;
 
-import android.app.Activity;
 import android.content.*;
+import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
@@ -12,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 
@@ -19,6 +19,7 @@ import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
 import com.crewcloud.apps.crewapproval.interfaces.BaseHTTPCallBack;
+import com.crewcloud.apps.crewapproval.interfaces.ICheckSSL;
 import com.crewcloud.apps.crewapproval.interfaces.OnAutoLoginCallBack;
 import com.crewcloud.apps.crewapproval.interfaces.OnHasAppCallBack;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
@@ -32,10 +33,11 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
     private TextView rlLogin;
     public PreferenceUtilities mPrefs;
     private boolean mFirstLogin = true;
-    private String mInputUsername, mInputPassword;
     private boolean mFirstStart = false;
     private boolean isAutoLoginShow = false;
     private String mRegId;
+    private LinearLayout llMain;
+    private ImageView imgLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,23 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         etUsername = findViewById(R.id.login_edt_username);
         etPassword = findViewById(R.id.login_edt_password);
         etDomain = findViewById(R.id.login_edt_server);
+        llMain = findViewById(R.id.llMain);
+        imgLogo = findViewById(R.id.img_login_logo);
+
+        llMain.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                llMain.getWindowVisibleDisplayFrame(r);
+                int screenHeight = llMain.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+                if (keypadHeight > screenHeight * 0.15) {
+                    imgLogo.setVisibility(View.GONE);
+                } else {
+                    imgLogo.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
@@ -168,41 +187,13 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
                 });
     }
 
-    public void autoLogin(String companyID, String userID) {
-        mInputUsername = userID;
-        domain = companyID;
-
-        domain = getServerSite(domain);
-        String company_domain = domain;
-
-        if (!company_domain.startsWith("http")) {
-            domain = "http://" + domain;
-        }
-
-        String temp_server_site = domain;
-
-        if (temp_server_site.contains(".bizsw.co.kr")) {
-            temp_server_site = "http://www.bizsw.co.kr:8080";
-        } else {
-            if (temp_server_site.contains("crewcloud")) {
-                temp_server_site = "http://www.crewcloud.net";
-            }
-        }
+    public void autoLogin(String companyID, final String userID) {
+        Utils.setServerSite(companyID);
         showProgressDialog();
-
-        PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
-        preferenceUtilities.setCurrentServiceDomain(temp_server_site); // Domain
-        preferenceUtilities.setCurrentCompanyDomain(company_domain); // group ID
-
-        HttpRequest.getInstance().AutoLogin(company_domain, mInputUsername, temp_server_site, new OnAutoLoginCallBack() {
+        HttpRequest.getInstance().AutoLogin(userID, new OnAutoLoginCallBack() {
             @Override
             public void OnAutoLoginSuccess(String response) {
-                if (!TextUtils.isEmpty(domain)) {
-                    CrewCloudApplication.getInstance().getPreferenceUtilities().setCurrentServiceDomain(domain);
-                    CrewCloudApplication.getInstance().getPreferenceUtilities().setCurrentUserID(mInputUsername);
-                    CrewCloudApplication.getInstance().getPreferenceUtilities().putServerSite(domain);
-                }
-
+                CrewCloudApplication.getInstance().getPreferenceUtilities().setCurrentUserID(userID);
                 loginSuccess();
             }
 
@@ -235,7 +226,7 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         sendBroadcast(intent);
 
-        etDomain.setText(new PreferenceUtilities().getDomain());
+        etDomain.setText(new PreferenceUtilities().getCompanyName());
         etPassword.setText(new PreferenceUtilities().getPass());
         etUsername.setText(new PreferenceUtilities().getName());
 
@@ -296,42 +287,35 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
             @Override
             public void onClick(View v) {
                 registerInBackground();
-                mInputUsername = etUsername.getText().toString();
-                mInputPassword = etPassword.getText().toString();
-                domain = etDomain.getText().toString();
+                final String username = etUsername.getText().toString();
+                final String password = etPassword.getText().toString();
+                final String domain = etDomain.getText().toString();
 
-                if (TextUtils.isEmpty(checkStringValue(domain, mInputUsername, mInputPassword))) {
-                    domain = getServerSite(domain);
-                    String company_domain = domain;
-                    if (!company_domain.startsWith("http")) {
-                        domain = "http://" + domain;
-                    }
-
-                    String temp_server_site = domain;
-                    if (temp_server_site.contains(".bizsw.co.kr")) {
-                        temp_server_site = "http://www.bizsw.co.kr:8080";
-                    } else {
-                        if (temp_server_site.contains("crewcloud")) {
-                            temp_server_site = "http://www.crewcloud.net";
-                        }
-                    }
+                Utils.setServerSite(domain);
+                if (TextUtils.isEmpty(checkStringValue(domain, username, password))) {
 
                     showProgressDialog();
-                    PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
-                    preferenceUtilities.setCurrentServiceDomain(temp_server_site); // Domain
-                    preferenceUtilities.setCurrentCompanyDomain(company_domain); // group ID
+                    HttpRequest.getInstance().checkSSL(new ICheckSSL() {
+                        @Override
+                        public void hasSSL(boolean hasSSL) {
+                            Utils.setServerSite(domain);
+                            HttpRequest.getInstance().login(LoginActivity.this, username, password);
+                        }
 
-                    HttpRequest.getInstance().login(LoginActivity.this, mInputUsername, mInputPassword, company_domain, temp_server_site);
+                        @Override
+                        public void checkSSLError(ErrorDto errorData) {
+                            dismissProgressDialog();
+                            Toast.makeText(LoginActivity.this, "Cannot check ssl this domain!", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 } else {
-                    DialogUtil.customAlertDialog(LoginActivity.this, checkStringValue(domain, mInputUsername, mInputPassword), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
+                    DialogUtil.customAlertDialog(LoginActivity.this, checkStringValue(domain, username, password), getString(R.string.string_ok), null, new DialogUtil.OnAlertDialogViewClickEvent() {
                         @Override
                         public void onOkClick(DialogInterface alertDialog) {
-                            CrewCloudApplication.getInstance().getPreferenceUtilities().putServerSite(domain);
                         }
 
                         @Override
                         public void onCancelClick() {
-
                         }
                     });
                 }
@@ -369,26 +353,8 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         }
     }
 
-    private String getServerSite(String server_site) {
-        String[] domains = server_site.split("[.]");
-        if (server_site.contains(".bizsw.co.kr") && !server_site.contains("8080")) {
-            return server_site.replace(".bizsw.co.kr", ".bizsw.co.kr:8080");
-        }
-
-        if (domains.length == 1) {
-            return domains[0] + ".crewcloud.net";
-        } else {
-            return server_site;
-        }
-    }
-
     @Override
     public void onHTTPSuccess() {
-        if (!TextUtils.isEmpty(domain)) {
-            CrewCloudApplication.getInstance().getPreferenceUtilities().setCurrentServiceDomain(domain);
-            CrewCloudApplication.getInstance().getPreferenceUtilities().putServerSite(domain);
-        }
-
         loginSuccess();
     }
 
@@ -435,7 +401,6 @@ public class LoginActivity extends BaseActivity implements BaseHTTPCallBack, OnH
         HttpRequest.getInstance().insertAndroidDevice(new BaseHTTPCallBack() {
             @Override
             public void onHTTPSuccess() {
-                Log.d(">>> insert success", domain);
                 callActivity(MainActivity.class);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
