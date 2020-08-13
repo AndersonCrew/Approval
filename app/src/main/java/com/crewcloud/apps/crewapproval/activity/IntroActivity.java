@@ -53,6 +53,7 @@ public class IntroActivity extends BaseActivity {
             preferenceUtilities.setCurrentCompanyNo(0);
             preferenceUtilities.setCurrentUserID("");
             preferenceUtilities.putBooleanValue(Constants.HAS_CLEAR_DATA_CHECK_SSL, true);
+            Toast.makeText(mContext, "Running clear data", Toast.LENGTH_SHORT).show();
         }
 
         if (!checkPermissions()) {
@@ -138,7 +139,6 @@ public class IntroActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             PreferenceUtilities preferenceUtilities = CrewCloudApplication.getInstance().getPreferenceUtilities();
-
             WebClient.HasApplication_v2(Utils.getLanguageCode(), Utils.getTimeZoneOffset(), CrewCloudApplication.getProjectCode(),
                     preferenceUtilities.getDomain(), new WebClient.OnWebClientListener() {
                         @Override
@@ -149,7 +149,6 @@ public class IntroActivity extends BaseActivity {
                                 mMessage = jsonNode.get("Message").asText();
                             } catch (Exception e) {
                                 e.printStackTrace();
-
                                 mIsFailed = true;
                                 mHasApplication = false;
                                 mMessage = getString(R.string.loginActivity_message_wrong_server_site);

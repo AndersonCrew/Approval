@@ -27,6 +27,7 @@ import com.crewcloud.apps.crewapproval.base.WebContentChromeClient;
 import com.crewcloud.apps.crewapproval.base.WebContentClient;
 import com.crewcloud.apps.crewapproval.dtos.ErrorDto;
 import com.crewcloud.apps.crewapproval.interfaces.OnHasUpdateAppCallBack;
+import com.crewcloud.apps.crewapproval.util.Constants;
 import com.crewcloud.apps.crewapproval.util.DialogUtil;
 import com.crewcloud.apps.crewapproval.util.HttpRequest;
 import com.crewcloud.apps.crewapproval.util.PermissionUtil;
@@ -51,11 +52,13 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
     private WebView wvContent = null;
     private ProgressBar mProgressBar;
     private final int UPDATE_PERMISSIONS_REQUEST_CODE = 1;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getDataIntent();
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -74,6 +77,14 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
 
         HttpRequest.getInstance().getBadgeCount();
         HttpRequest.getInstance().checkApplicationUpdate(this);
+    }
+
+    private void getDataIntent() {
+        if(getIntent().getStringExtra(Constants.URL_ALARM) != null) {
+            url = getIntent().getStringExtra(Constants.URL_ALARM);
+        } else {
+            url = "/UI/_EAPPMobile/Main.aspx";
+        }
     }
 
     @Override
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
         CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey2=" + Utils.getLanguageCode());
         CookieManager.getInstance().setCookie(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain(), "skey3=" + preferenceUtilities.getCurrentCompanyNo());
 
-        wvContent.loadUrl(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + "/UI/_EAPPMobile/Main.aspx");
+        wvContent.loadUrl(CrewCloudApplication.getInstance().getPreferenceUtilities().getDomain() + url);
 
     }
 

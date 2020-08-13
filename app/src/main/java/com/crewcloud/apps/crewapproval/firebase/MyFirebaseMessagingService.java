@@ -17,6 +17,7 @@ import android.util.Log;
 import com.crewcloud.apps.crewapproval.CrewCloudApplication;
 import com.crewcloud.apps.crewapproval.R;
 import com.crewcloud.apps.crewapproval.activity.MainActivity;
+import com.crewcloud.apps.crewapproval.util.Constants;
 import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.TimeUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -32,7 +33,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (mapData.containsKey("message")) {
             ShowNotification(mapData.get("message"),
                     mapData.get("title"),
-                    mapData.get("writer"));
+                    mapData.get("writer"),
+                    mapData.get("url"));
         }
 
         int badgeCount = 0;
@@ -60,7 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void ShowNotification(String message, String title, String writer) {
+    private void ShowNotification(String message, String title, String writer, String url) {
         long[] vibrate = new long[]{1000, 1000, 0, 0, 0};
         // Sets an ID for the notification, so it can be updated.
         int notifyID = 1;
@@ -71,6 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Constants.URL_ALARM, url);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
