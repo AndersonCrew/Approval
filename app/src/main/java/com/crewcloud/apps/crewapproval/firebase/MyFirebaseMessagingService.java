@@ -33,24 +33,33 @@ import static android.support.v4.app.NotificationCompat.PRIORITY_LOW;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private String channelId = "0011001";
-    private String channelName = "CrewApproval 0011001";
-    private String channelIdNonSound = "0022002";
-    private String channelNameNonSound = "CrewApproval 0022002";
-    private NotificationChannel channel1, channel2;
-    boolean isEnableSound = true, isEnableVibrate = true;
+    int notifyID = 1;
+    String CHANNEL_ID = "CrewApproval_channel_01";
+    CharSequence name = "CrewApproval";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+
         Map<String, String> mapData = remoteMessage.getData();
 
-        PreferenceUtilities prefs = CrewCloudApplication.getInstance().getPreferenceUtilities();
-        isEnableVibrate = prefs.getNOTIFI_VIBRATE();
-        isEnableSound = prefs.getNOTIFI_SOUND();
 
         int badgeCount = 0;
         try {
+            long lastTimePush = CrewCloudApplication.getInstance().getPreferenceUtilities().getLongValue(Constants.TIME_LAST_PUSH, 0);
+            if (mapData.containsKey("time")) {
+                long timePush = Long.parseLong(mapData.get("time"));
+                Log.d("Notification", "lastTimePush " + lastTimePush + "\n" + "timePush " + timePush + "\n");
+                if (timePush < lastTimePush) {
+                    Log.d("Notification", "return");
+                } else {
+                    Log.d("Notification", "putIntValue");
+                    CrewCloudApplication.getInstance().getPreferenceUtilities().putLongValue(Constants.TIME_LAST_PUSH, timePush);
+                }
+            }
+
             String value = mapData.get("badgecount");
+            Log.d("Notification", "Unread  " + value);
 
             if (value != null) {
                 badgeCount = Integer.parseInt(value);
@@ -58,6 +67,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     CrewCloudApplication.getInstance().shortcut(badgeCount);
                 } else {
                     CrewCloudApplication.getInstance().removeShortcut();
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.cancelAll();
+
+                    return;
                 }
             }
         } catch (Exception e) {
@@ -80,135 +94,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private NotificationManager mNotificationManager;
-    private NotificationCompat.Builder mBuilder;
-
     private void ShowNotification(String message, String title, String writer, String url, int count) {
-        PreferenceUtilities prefs = CrewCloudApplication.getInstance().getPreferenceUtilities();
-        boolean isNewMail = prefs.getNOTIFI_MAIL();
-        boolean isTime = prefs.getNOTIFI_TIME();
-        String strFromTime = prefs.getSTART_TIME();
-        String strToTime = prefs.getEND_TIME();
-
-        final long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
-        final Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.URL_ALARM, url);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setAutoCancel(true)
+                        .setNumber(count)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
-        String idChanel = isEnableSound ? channelId : channelIdNonSound;
-        mBuilder = new NotificationCompat.Builder(this, idChanel)
-                .setSmallIcon(R.drawable.notification_approval)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.approval))
-                .setContentText(title)
-                .setAutoCancel(true)
-                .setContentIntent(contentIntent)
-                .setTicker(message)
-                .setNumber(count)
-                .setContentTitle(message);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if(count == 0) {
+            notificationManager.cancelAll();
+            return;
+        }
+
+        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = isEnableSound ? channel1 : channel2;
-            mChannel.setShowBadge(true);
-
-            if (isEnableVibrate) {
-                mBuilder.setVibrate(vibrate);
-                Vibrator v = (Vibrator) CrewCloudApplication.getInstance().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(500);
-            } else {
-                final long[] noVibrate = new long[]{0, 0, 0, 0, 0};
-                mBuilder.setVibrate(noVibrate);
-                Vibrator v = (Vibrator) CrewCloudApplication.getInstance().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(0);
-            }
-        } else {
-            // Check notification setting and config notification
-            if (isEnableSound) {
-                mBuilder.setSound(soundUri);
-            } else {
-                mBuilder.setSound(null);
-            }
-
-            if (isEnableVibrate) {
-                mBuilder.setVibrate(vibrate);
-                Vibrator v = (Vibrator) CrewCloudApplication.getInstance().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(500);
-            } else {
-                final long[] noVibrate = new long[]{0, 0, 0, 0, 0};
-                mBuilder.setVibrate(noVibrate);
-                Vibrator v = (Vibrator) CrewCloudApplication.getInstance().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(0);
-            }
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    name,
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-        bigTextStyle.bigText(Html.fromHtml("<font color='#878787'>" + title + "</font>" + "<br/>" + writer));
-        mBuilder.setStyle(bigTextStyle);
-
-
-        if (isNewMail) {
-            if (isTime) {
-                if (TimeUtils.isBetweenTime(strFromTime, strToTime)) {
-                    mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
-                }
-            } else {
-                mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
-            }
-        }
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channel1 = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            channel2 = new NotificationChannel(channelIdNonSound, channelNameNonSound, NotificationManager.IMPORTANCE_LOW);
-        }
-        startForeground(1, getNotification());
-    }
-
-    public Notification getNotification() {
-        String channel;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            channel = createChannel();
-        else {
-            channel = "";
-        }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("CrewApproval");
-        Notification notification = mBuilder
-                .setPriority(PRIORITY_LOW)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .build();
-
-
-        return notification;
-    }
-
-    @NonNull
-    @TargetApi(26)
-    private synchronized String createChannel() {
-        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationChannel mChannel = null;
-        String chanelId = isEnableSound ? channelId : channelIdNonSound;
-        if (isEnableSound) {
-            mChannel = channel1;
-        } else {
-            mChannel = channel2;
-        }
-
-        mChannel.enableLights(true);
-        mChannel.setLightColor(Color.BLUE);
-        if (mNotificationManager != null) {
-            mNotificationManager.createNotificationChannel(mChannel);
-        } else {
-            stopSelf();
-        }
-
-        return chanelId;
+        notificationManager.notify(notifyID /* ID of notification */, notificationBuilder.build());
     }
 }

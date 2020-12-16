@@ -8,4 +8,5 @@ object Constants {
     const val HAS_SSL = "HAS_SSL"
     const val HAS_CLEAR_DATA_CHECK_SSL = "HAS_CLEAR_DATA_CHECK_SSL"
     const val URL_ALARM = "URL_ALARM"
+    const val TIME_LAST_PUSH = "TIME_LAST_PUSH_MIL"
 }

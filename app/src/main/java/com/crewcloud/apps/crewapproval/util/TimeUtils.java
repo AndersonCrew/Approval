@@ -18,8 +18,11 @@ public class TimeUtils {
 
     private static Calendar getTimeFromStr(String strTime) {
         String hours = strTime.substring(3, 5);
+        int intHours = 0;
+        if(strTime.substring(0, 2).equals("PM") || strTime.substring(0, 2).equals("pm")) {
+            intHours = Integer.parseInt(hours) + 12;
+        } else intHours = Integer.parseInt(hours);
         String minutes = strTime.substring(6, 8);
-        int intHours = Integer.parseInt(hours);
         int intMinutes = Integer.parseInt(minutes);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, intHours);

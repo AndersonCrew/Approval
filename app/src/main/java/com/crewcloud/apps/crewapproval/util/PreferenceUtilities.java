@@ -159,7 +159,7 @@ public class PreferenceUtilities {
     }
 
     public boolean getNOTIFI_TIME() {
-        return mPreferences.getBoolean(NOTIFI_TIME, false);
+        return mPreferences.getBoolean(NOTIFI_TIME, true);
     }
 
     public void setNOTIFI_VIBRATE(boolean b) {
@@ -222,5 +222,21 @@ public class PreferenceUtilities {
 
     public boolean getBooleanValue(String key, boolean defaultValue) {
         return mPreferences.getBoolean(key, defaultValue);
+    }
+
+    public void putIntValue(String key, int value) {
+        mPreferences.edit().putInt(key, value).apply();
+    }
+
+    public int getIntValue(String key, int defaultValue) {
+        return mPreferences.getInt(key, defaultValue);
+    }
+
+    public void putLongValue(String key, long value) {
+        mPreferences.edit().putLong(key, value).apply();
+    }
+
+    public long getLongValue(String key, long defaultValue) {
+        return mPreferences.getLong(key, defaultValue);
     }
 }
