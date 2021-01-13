@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
     @Override
     public void hasApp(String url) {
         updateUrl = url;
-        DialogUtil.customAlertDialog(this, getString(R.string.string_update_content), getString(R.string.auto_login_button_yes), getString(R.string.auto_login_button_no),
+        DialogUtil.customAlertDialog(this, getString(R.string.string_update_content), getString(R.string.auto_login_button_yes), null,
                 new DialogUtil.OnAlertDialogViewClickEvent() {
                     @Override
                     public void onOkClick(DialogInterface alertDialog) {

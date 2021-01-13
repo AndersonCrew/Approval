@@ -26,9 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class HttpRequest {
-
-
-
     private static HttpRequest mInstance;
     private static String root_link;
 
