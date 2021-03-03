@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnHasUpdateAppCal
             refreshMainURL();
         }
         CrewCloudApplication.activityResumed();
+        wvContent.reload();
     }
 
     @Override
