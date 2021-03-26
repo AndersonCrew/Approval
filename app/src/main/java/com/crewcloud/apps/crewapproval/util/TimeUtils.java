@@ -92,4 +92,19 @@ public class TimeUtils {
 
         return result;
     }
+
+    public static String formatYear(String birthDate) {
+        String result = "";
+        try {
+            String timeString;
+            timeString = birthDate.substring(birthDate.indexOf('(') + 1, birthDate.indexOf('+'));
+            Date date = new Date(Long.parseLong(timeString));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+            result = simpleDateFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

@@ -240,7 +240,9 @@
                     </LinearLayout>
 
                     <!--LAYOUT JOIN DATE-->
-                    <LinearLayout style="@style/ProfileLayout">
+                    <LinearLayout
+                        android:id="@+id/llJoinDate"
+                        style="@style/ProfileLayout">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -256,7 +258,9 @@
 
                     </LinearLayout>
                     <!--LAYOUT Birthday-->
-                    <LinearLayout style="@style/ProfileLayout">
+                    <LinearLayout
+                        android:id="@+id/llBirthday"
+                        style="@style/ProfileLayout">
 
                         <TextView
                             android:layout_width="match_parent"

@@ -26,7 +26,6 @@ import com.crewcloud.apps.crewapproval.util.PreferenceUtilities;
 import com.crewcloud.apps.crewapproval.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-
 public class ProfileUserActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvName, tvPersonal, tvEmail, tvCompany, tvCompanyPhone, tvExtensionNumber,
             tvCellPhone, tvPosition, tvPassword, tvDate, tvBirthday;
@@ -66,6 +65,8 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         tvPassword = findViewById(R.id.tv_password);
         tvBirthday = findViewById(R.id.tv_birthday);
         tvDate = findViewById(R.id.tv_join);
+        llJoinDate = findViewById(R.id.llJoinDate);
+        llBirthday = findViewById(R.id.llBirthday);
 
         tvExtensionNumber = findViewById(R.id.tvExtensionNumber);
         tvCellPhone = findViewById(R.id.tvCellPhone);
@@ -154,11 +155,28 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         else layoutExtensionNumber.setVisibility(View.GONE);
 
         String birthDay = TimeUtils.displayTimeWithoutOffsetV2(profile.getBirthDate());
-        String joinDate = TimeUtils.displayTimeWithoutOffsetV2(profile.getEntranceDate());
+        int yearBirthDay = Integer.parseInt(TimeUtils.formatYear(profile.getBirthDate()));
 
-        tvDate.setText(joinDate);
-        tvBirthday.setText(birthDay);
+        String joinDate = TimeUtils.displayTimeWithoutOffsetV2(profile.getEntranceDate());
+        int yearDateJoin = Integer.parseInt(TimeUtils.formatYear(profile.getEntranceDate()));
+
+        if(yearBirthDay <= 1900) {
+            llBirthday.setVisibility(View.GONE);
+        } else {
+            llBirthday.setVisibility(View.VISIBLE);
+            tvBirthday.setText(birthDay);
+        }
+
+        if(yearDateJoin <= 1900) {
+            llJoinDate.setVisibility(View.GONE);
+        } else {
+            llJoinDate.setVisibility(View.VISIBLE);
+            tvDate.setText(joinDate);
+        }
+
     }
+
+    private LinearLayout llBirthday, llJoinDate;
 
     @Override
     public void onBackPressed() {
